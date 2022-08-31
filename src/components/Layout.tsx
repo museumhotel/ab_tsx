@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from "react";
 import styled from "styled-components";
 import useWindowSize from "../hooks/useWindowSize";
-import { AppContainer } from "../styles/styles";
+import { AppContainer, Footer, FooterText } from "../styles/styles";
 import NavButtons from "./NavButtons";
 
 interface LayoutProps {
@@ -21,6 +21,9 @@ export const Layout = ({ children }: PropsWithChildren<LayoutProps>) => {
     <>
       <AppContainer>
         <NavButtons />
+        <Footer>
+          <FooterText>2022</FooterText>
+        </Footer>
       </AppContainer>
     </>
   );
