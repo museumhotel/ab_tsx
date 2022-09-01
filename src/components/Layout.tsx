@@ -7,11 +7,6 @@ import NavButtons from "./NavButtons";
 interface LayoutProps {
   children?: React.ReactNode;
 }
-//type LayoutProps<P> = P & { children?: React.ReactNode };
-
-export const Canvas = styled.canvas`
-  grid-area: canvas;
-`;
 
 export const Layout = ({ children }: PropsWithChildren<LayoutProps>) => {
   //hold window size in state

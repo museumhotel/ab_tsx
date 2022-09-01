@@ -15,18 +15,17 @@ const Title = styled.h1`
 const Home: NextPage = () => {
   return (
     <>
-      <Layout>
-        <div>
-          <Head>
-            <title>Art Boyz Online</title>
-            <meta
-              name="description"
-              content="Website for the Art Boyz collective"
-            />
-            <link rel="icon" href="/favicon.ico" />
-          </Head>
-        </div>
-      </Layout>
+      <div>
+        <Head>
+          <title>Art Boyz Online</title>
+          <meta
+            name="description"
+            content="Website for the Art Boyz collective"
+          />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+      </div>
+      <Layout></Layout>
     </>
   );
 };
