@@ -25,6 +25,10 @@ export const AppContainer = styled.div`
     "footer footer footer";
 `;
 
+export const Canvas = styled.canvas`
+  grid-area: canvas;
+`;
+
 export const Footer = styled.footer`
   grid-area: footer;
   border-top: 1px solid #eaeaea;

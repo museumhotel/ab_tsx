@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import useWindowSize from "../hooks/useWindowSize";
 
@@ -9,6 +9,7 @@ const StyledCanvas = styled.canvas`
 interface CanvasProps {
   width: number;
   height: number;
+  children?: React.ReactNode;
 }
 
 //type to help keep track of mouse pos in state
@@ -17,7 +18,7 @@ type Coordinate = {
   y: number;
 };
 
-const Canvas = ({ width, height }: CanvasProps) => {
+const Canvas = ({ width, height, children }: CanvasProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   //set state to track mouse pos and whether drawing or not
@@ -133,14 +134,16 @@ const Canvas = ({ width, height }: CanvasProps) => {
     };
   }, [exitPaint]);
 
-  return <StyledCanvas ref={canvasRef} height={height} width={width} />;
-};
+  //allocate comp size based on custom hook optimised for nextjs ssr
+  let size = useWindowSize();
 
-//allocate comp size based on custom hook optimised for nextjs ssr
-let size = useWindowSize();
-Canvas.defaultProps = {
-  width: size.width,
-  height: size.height,
+  return (
+    <StyledCanvas
+      ref={canvasRef}
+      height={size.height}
+      width={size.width}
+    ></StyledCanvas>
+  );
 };
 
 export default Canvas;
