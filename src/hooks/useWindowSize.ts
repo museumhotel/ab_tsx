@@ -12,8 +12,9 @@ function useWindowSize() {
       //as we have window, handle window resize
       function handleResize() {
         setWindowSize({
-          width: window.innerWidth,
-          height: window.innerHeight,
+          //half so that canvas fits properly
+          width: window.innerWidth / 2,
+          height: window.innerHeight / 2,
         });
       }
       //listen for window resize evt
