@@ -1,7 +1,6 @@
 //import Link from "next/link";
-//@ts-nocheck
 import styled from "styled-components";
-import Link from "./Link";
+import CustomLink from "./Link";
 
 const ButtonTL = styled.div`
   grid-area: tLButton;
@@ -32,16 +31,16 @@ const NavButtons: React.FC = () => {
   return (
     <>
       <ButtonTL>
-        <Link href="/">Home</Link>
+        <CustomLink to="/">Home</CustomLink>
       </ButtonTL>
       <ButtonTR>
-        <Link href="/about">About</Link>
+        <CustomLink to="/about">About</CustomLink>
       </ButtonTR>
       <ButtonBL>
-        <Link href="/music">Music</Link>
+        <CustomLink to="/music">Music</CustomLink>
       </ButtonBL>
       <ButtonBR>
-        <Link href="/socials">Social Feed</Link>
+        <CustomLink to="/socials">Social Feed</CustomLink>
       </ButtonBR>
     </>
   );
