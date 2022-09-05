@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { draw } from "../components/Canvas";
+import { draw } from "../components/Canvas2";
 import useWindowSize from "./useWindowSize";
 
 export function useCanvasDraw() {
@@ -10,17 +10,15 @@ export function useCanvasDraw() {
   const [coordinates, setCoordinates] = useState([]);
 
   useEffect(() => {
-    if (canvasRef.current !== null) {
-      const canvasObj = canvasRef.current;
-      const ctx = canvasObj.getContext("2d")!;
-      //clear canvas before rendering coords held in state
-      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    const canvasObj = canvasRef.current!;
+    const ctx = canvasObj.getContext("2d")!;
+    //clear canvas before rendering coords held in state
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-      //draw the coords held in state
-      coordinates.forEach((coordinate) => {
-        draw(ctx, coordinate);
-      });
-    }
+    //draw the coords held in state
+    coordinates.forEach((coordinate) => {
+      draw(ctx, coordinate);
+    });
   });
   return [coordinates, setCoordinates, canvasRef, canvasWidth, canvasHeight];
 }
