@@ -1,17 +1,13 @@
 import React, { PropsWithChildren } from "react";
 import styled from "styled-components";
 import useWindowSize from "../hooks/useWindowSize";
-import { AppContainer } from "../styles/styles";
+import { AppContainer, Footer, FooterText } from "../styles/styles";
+import Canvas from "./Canvas";
 import NavButtons from "./NavButtons";
 
 interface LayoutProps {
   children?: React.ReactNode;
 }
-//type LayoutProps<P> = P & { children?: React.ReactNode };
-
-export const Canvas = styled.canvas`
-  grid-area: canvas;
-`;
 
 export const Layout = ({ children }: PropsWithChildren<LayoutProps>) => {
   //hold window size in state
@@ -21,6 +17,10 @@ export const Layout = ({ children }: PropsWithChildren<LayoutProps>) => {
     <>
       <AppContainer>
         <NavButtons />
+        <Canvas height={size.height} width={size.width}></Canvas>
+        <Footer>
+          <FooterText>2022</FooterText>
+        </Footer>
       </AppContainer>
     </>
   );
