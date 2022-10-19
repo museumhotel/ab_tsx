@@ -74,12 +74,12 @@ const Canvas = ({ width, height, children }: CanvasProps) => {
   const prepareCanvas = useCallback((e: MouseEvent) => {
     //maximum possible rect sizes given canvas size
     const maxDimensions = getRectDimensionBoundaries(e);
-    const randomCoordinates = getRandomisedCoordinates(e);
+    const frameCoordinates = getFrameCoordinates(e);
 
     if (maxDimensions) {
       setIsMouseOnCanvas(true);
       setMaxFrameSize(maxDimensions);
-      setFramePosition(randomCoordinates);
+      setFramePosition(frameCoordinates);
       //console.log(maxDimensions);
     }
   }, []);
@@ -120,14 +120,25 @@ const Canvas = ({ width, height, children }: CanvasProps) => {
     };
   };
 
-  const getRandomisedCoordinates = (e: MouseEvent): Coordinate | undefined => {
+  const getFrameCoordinates = (e: MouseEvent): Coordinate | undefined => {
     if (!canvasRef.current) {
       return;
     }
+    function getRandomNumber(min: number, max: number) {
+      return (
+        Math.random() * (Math.floor(max) - Math.floor(min)) + Math.floor(min)
+      );
+    }
     const canvas: HTMLCanvasElement = canvasRef.current;
+    console.log(canvas.width, canvas.height);
     return {
-      x: e.pageX - Math.random() * canvas.offsetLeft,
-      y: e.pageY - Math.random() * canvas.offsetTop,
+      x: e.offsetX,
+      y: e.offsetY,
+      //x: getRandomNumber(e.pageX, canvas.height),
+      //Math.random() * canvas.width,
+      //y: getRandomNumber(e.pageY, canvas.width),
+      //x: e.pageX - Math.random() * canvas.offsetLeft,
+      //y: e.pageY - Math.random() * canvas.offsetTop,
     };
   };
 
@@ -163,7 +174,7 @@ const Canvas = ({ width, height, children }: CanvasProps) => {
       if (isMouseOnCanvas) {
         //const maxFrameSizeParam = getRectDimensionBoundaries(e)
         //need to get sizes as well as positions based on mouse locations
-        const newFramePosition = getRandomisedCoordinates(e);
+        const newFramePosition = getFrameCoordinates(e);
         if (maxFrameSize && framePosition && newFramePosition) {
           drawRandomRects(framePosition, newFramePosition, maxFrameSize);
           setFramePosition(newFramePosition);
@@ -258,17 +269,22 @@ const Canvas = ({ width, height, children }: CanvasProps) => {
         //let width = (Math.random() * size.width) / 4;
         //let height = (Math.random() * size.height) / 4;
 
-        if (newX + x > rectDimensions.maxWidth || newX - x < 0) {
+        /* if (newX + x > rectDimensions.maxWidth || newX - x < 0) {
           newX = -newX;
         }
         if (newY + y > rectDimensions.maxHeight || newY - y < 0) {
           newY = -newY;
         }
         x += newX;
-        y += newY;
+        y += newY; */
 
         ctx.beginPath();
-        ctx.rect(x, y, width, height);
+        ctx.rect(
+          size.width / 2 - x / 2,
+          size.height / 2 - y / 2,
+          width,
+          height
+        );
         ctx.strokeStyle = "darkred";
         ctx.lineWidth = 5;
         ctx.stroke();
