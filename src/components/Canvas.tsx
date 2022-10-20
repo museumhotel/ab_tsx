@@ -1,6 +1,9 @@
+import { rect, vertices } from "@thi.ng/geom";
+import { fuzzyPoly } from "@thi.ng/geom-fuzz";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import useWindowSize from "../hooks/useWindowSize";
+import { draw } from "@thi.ng/hiccup-canvas/draw";
 
 const StyledCanvas = styled.canvas`
   grid-area: canvas;
@@ -27,25 +30,6 @@ type MaxRectDimensions = {
 function getRandomNumber(min: number, max: number) {
   return Math.random() * (Math.floor(max) - Math.floor(min)) + Math.floor(min);
 }
-
-/* let frameAndText = {
-  //frame
-  x: 50,
-  y: 50,
-  velX: 5,
-  velY: 2,
-  width: 50,
-  height: 50,
-  lineWidth: 5,
-  //text
-  //text: "Art \nBoyz.",
-  color: "black",
-  draw() {
-    ctx.beginPath()
-    ctx.strokeRect(this.x, this.y, this.width, this.height)
-
-  }
-} */
 
 const Canvas = ({ width, height, children }: CanvasProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -188,7 +172,10 @@ const Canvas = ({ width, height, children }: CanvasProps) => {
     if (!canvasRef.current) {
       return;
     }
+
     const canvas: HTMLCanvasElement = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+
     canvas.addEventListener("mousemove", drawRects);
     return () => {
       canvas.removeEventListener("mousemove", drawRects);
@@ -250,18 +237,12 @@ const Canvas = ({ width, height, children }: CanvasProps) => {
 
     if (ctx) {
       let animate = () => {
-        requestAnimationFrame(draw);
+        requestAnimationFrame(drawVRect);
         ctx.clearRect(0, 0, size.width, size.height);
         frameCount++;
-
-        /* for (let i = 0; i <= rectContainer.length; i++) {
-          rectContainer[i].update();
-        } */
       };
 
-      //animate();
-
-      let draw = () => {
+      let drawVRect = () => {
         let x = prevPositions.x;
         let y = prevPositions.y;
         let newX = newPositions.x;
@@ -275,6 +256,11 @@ const Canvas = ({ width, height, children }: CanvasProps) => {
           rectDimensions.maxHeight / 2,
           rectDimensions.maxHeight
         );
+
+        const shape = vertices(rect(50), 4);
+        fuzzyPoly(shape, { fill: "darkred", jitter: 5 });
+        draw(ctx, fuzzyPoly(shape, { fill: "darkred", jitter: 5 }));
+
         //let width = (Math.random() * size.width) / 4;
         //let height = (Math.random() * size.height) / 4;
 
@@ -301,7 +287,7 @@ const Canvas = ({ width, height, children }: CanvasProps) => {
         requestAnimationFrame(animate);
       };
 
-      draw();
+      drawVRect();
     }
   };
   //initialised from the usecallback hook if (isPainting)
