@@ -24,6 +24,10 @@ type MaxRectDimensions = {
   maxHeight: number;
 };
 
+function getRandomNumber(min: number, max: number) {
+  return Math.random() * (Math.floor(max) - Math.floor(min)) + Math.floor(min);
+}
+
 /* let frameAndText = {
   //frame
   x: 50,
@@ -124,11 +128,7 @@ const Canvas = ({ width, height, children }: CanvasProps) => {
     if (!canvasRef.current) {
       return;
     }
-    function getRandomNumber(min: number, max: number) {
-      return (
-        Math.random() * (Math.floor(max) - Math.floor(min)) + Math.floor(min)
-      );
-    }
+
     const canvas: HTMLCanvasElement = canvasRef.current;
     console.log(canvas.width, canvas.height);
     return {
@@ -246,11 +246,13 @@ const Canvas = ({ width, height, children }: CanvasProps) => {
     const canvas: HTMLCanvasElement = canvasRef.current;
     //Finally invoke canvas api methods on 2d ctx
     const ctx = canvas.getContext("2d");
+    let frameCount = 0;
 
     if (ctx) {
       let animate = () => {
         requestAnimationFrame(draw);
         ctx.clearRect(0, 0, size.width, size.height);
+        frameCount++;
 
         /* for (let i = 0; i <= rectContainer.length; i++) {
           rectContainer[i].update();
@@ -264,8 +266,15 @@ const Canvas = ({ width, height, children }: CanvasProps) => {
         let y = prevPositions.y;
         let newX = newPositions.x;
         let newY = newPositions.y;
-        let width = Math.random() * rectDimensions.maxWidth;
-        let height = Math.random() * rectDimensions.maxHeight;
+        let width = getRandomNumber(
+          rectDimensions.maxWidth / 2,
+          rectDimensions.maxWidth
+        );
+        //Math.random() * rectDimensions.maxWidth;
+        let height = getRandomNumber(
+          rectDimensions.maxHeight / 2,
+          rectDimensions.maxHeight
+        );
         //let width = (Math.random() * size.width) / 4;
         //let height = (Math.random() * size.height) / 4;
 
@@ -280,7 +289,7 @@ const Canvas = ({ width, height, children }: CanvasProps) => {
 
         ctx.beginPath();
         ctx.rect(
-          size.width / 2 - x / 2,
+          size.width * Math.sin(frameCount * 0.05) + 10,
           size.height / 2 - y / 2,
           width,
           height
