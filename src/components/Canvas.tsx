@@ -1,9 +1,17 @@
-import { rect, vertices } from "@thi.ng/geom";
-import { fuzzyPoly } from "@thi.ng/geom-fuzz";
+import {
+  aabb,
+  center,
+  flip,
+  rect,
+  rectFromCentroid,
+  vertices,
+} from "@thi.ng/geom";
+import { defHatchPen, fuzzyPoly } from "@thi.ng/geom-fuzz";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import useWindowSize from "../hooks/useWindowSize";
 import { draw } from "@thi.ng/hiccup-canvas/draw";
+import type { Vec } from "@thi.ng/vectors";
 
 const StyledCanvas = styled.canvas`
   grid-area: canvas;
@@ -235,6 +243,9 @@ const Canvas = ({ width, height, children }: CanvasProps) => {
     const ctx = canvas.getContext("2d");
     let frameCount = 0;
 
+    let width = rectDimensions.maxWidth / 2;
+    let height = rectDimensions.maxHeight / 2;
+
     if (ctx) {
       let animate = () => {
         requestAnimationFrame(drawVRect);
@@ -247,39 +258,92 @@ const Canvas = ({ width, height, children }: CanvasProps) => {
         let y = prevPositions.y;
         let newX = newPositions.x;
         let newY = newPositions.y;
-        let width = getRandomNumber(
+        /* let width = getRandomNumber(
           rectDimensions.maxWidth / 2,
           rectDimensions.maxWidth
         );
-        //Math.random() * rectDimensions.maxWidth;
         let height = getRandomNumber(
           rectDimensions.maxHeight / 2,
           rectDimensions.maxHeight
+        ); */
+
+        //draw(ctx, fuzzyPoly(shape, { fill: "darkred", jitter: 5 }));
+
+        let centralVec = {
+          [0]: size.width,
+          [1]: size.height,
+          [2]: 0,
+        };
+        //let aabbvec = aabb([width, height])
+        let aabbvec: Vec = [0, 0, 0];
+        let centeredRect = rectFromCentroid(aabbvec, 4);
+        const shape = vertices(rect([width, height]), 4);
+        fuzzyPoly(
+          shape,
+          {
+            translate: [
+              size.width * Math.sin(frameCount * 0.05) + 10,
+              size.height / 2 - y,
+            ],
+            stroke: "darkred",
+          },
+          { jitter: 5 }
         );
 
-        const shape = vertices(rect(50), 4);
-        fuzzyPoly(shape, { fill: "darkred", jitter: 5 });
-        draw(ctx, fuzzyPoly(shape, { fill: "darkred", jitter: 5 }));
+        let translateX = size.width * Math.sin(frameCount * 0.025) * 1.75;
 
-        //let width = (Math.random() * size.width) / 4;
-        //let height = (Math.random() * size.height) / 4;
-
-        /* if (newX + x > rectDimensions.maxWidth || newX - x < 0) {
-          newX = -newX;
+        if (translateX > size.width) {
+          translateX = size.width / 2 - x / 4;
+          width = getRandomNumber(
+            rectDimensions.maxWidth / 2.5,
+            rectDimensions.maxWidth
+          );
+          height = getRandomNumber(
+            rectDimensions.maxHeight / 2.5,
+            rectDimensions.maxHeight
+          );
         }
-        if (newY + y > rectDimensions.maxHeight || newY - y < 0) {
-          newY = -newY;
+        if (translateX == 0) {
+          translateX = size.width / 2;
+          width = getRandomNumber(
+            rectDimensions.maxWidth / 2.5,
+            rectDimensions.maxWidth
+          );
+          height = getRandomNumber(
+            rectDimensions.maxHeight / 2.5,
+            rectDimensions.maxHeight
+          );
         }
-        x += newX;
-        y += newY; */
+        draw(
+          ctx,
+          center(
+            fuzzyPoly(
+              shape,
+              {
+                translate: [
+                  translateX,
+                  size.height / 2 - y / 4, //4 keeps frame always in canvas
+                ],
+                stroke: "#8B0000",
+              },
+              {
+                //size: 10,
+                jitter: 0.25,
+                curveScale: 0.05,
+                //fill: defHatchPen("#8B0000", "d", 1, 2),
+                //jitter: 0.125
+              }
+            )
+          )
+        );
 
         ctx.beginPath();
-        ctx.rect(
+        /* ctx.rect(
           size.width * Math.sin(frameCount * 0.05) + 10,
           size.height / 2 - y / 2,
           width,
           height
-        );
+        ); */
         ctx.strokeStyle = "darkred";
         ctx.lineWidth = 5;
         ctx.stroke();
