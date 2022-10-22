@@ -248,10 +248,14 @@ const Canvas = ({ width, height, children }: CanvasProps) => {
 
     if (ctx) {
       let animate = () => {
-        requestAnimationFrame(drawVRect);
+        requestAnimationFrame(() => {
+          drawVRect();
+        });
         ctx.clearRect(0, 0, size.width, size.height);
         frameCount++;
       };
+
+      animate();
 
       let drawVRect = () => {
         let x = prevPositions.x;
@@ -324,6 +328,7 @@ const Canvas = ({ width, height, children }: CanvasProps) => {
                   translateX,
                   size.height / 2 - y / 4, //4 keeps frame always in canvas
                 ],
+                strokeWidth: 20,
                 stroke: "#8B0000",
               },
               {
@@ -345,13 +350,15 @@ const Canvas = ({ width, height, children }: CanvasProps) => {
           height
         ); */
         ctx.strokeStyle = "darkred";
-        ctx.lineWidth = 5;
+        ctx.lineWidth = 5; //control thi.ng lib polygon thickness through regular canvas api
         ctx.stroke();
 
-        requestAnimationFrame(animate);
+        requestAnimationFrame(() => {
+          animate();
+        });
       };
 
-      drawVRect();
+      //drawVRect();
     }
   };
   //initialised from the usecallback hook if (isPainting)
