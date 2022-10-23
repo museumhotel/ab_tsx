@@ -12,6 +12,7 @@ import styled from "styled-components";
 import useWindowSize from "../hooks/useWindowSize";
 import { draw } from "@thi.ng/hiccup-canvas/draw";
 import type { Vec } from "@thi.ng/vectors";
+import useOnScreen from "../hooks/useOnScreen";
 
 const StyledCanvas = styled.canvas`
   grid-area: canvas;
@@ -41,6 +42,10 @@ function getRandomNumber(min: number, max: number) {
 
 const Canvas = ({ width, height, children }: CanvasProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const isOnScreen = useOnScreen(canvasRef);
+
+  //console.log({ isOnScreen });
 
   //set state to track mouse pos and whether drawing or not
   const [isPainting, setIsPainting] = useState(false);
@@ -243,15 +248,22 @@ const Canvas = ({ width, height, children }: CanvasProps) => {
     const ctx = canvas.getContext("2d");
     let frameCount = 0;
 
+    let frameTime: number;
+    let previousFrame = 0;
+
     let width = rectDimensions.maxWidth / 2;
     let height = rectDimensions.maxHeight / 2;
 
     if (ctx) {
       let animate = () => {
+        ctx.clearRect(0, 0, size.width, size.height);
+        /*let deltaTime = frameTime - previousFrame
+        previousFrame = frameTime
+        drawVRect(deltaTime) */
+
         requestAnimationFrame(() => {
           drawVRect();
         });
-        ctx.clearRect(0, 0, size.width, size.height);
         frameCount++;
       };
 
@@ -273,14 +285,6 @@ const Canvas = ({ width, height, children }: CanvasProps) => {
 
         //draw(ctx, fuzzyPoly(shape, { fill: "darkred", jitter: 5 }));
 
-        let centralVec = {
-          [0]: size.width,
-          [1]: size.height,
-          [2]: 0,
-        };
-        //let aabbvec = aabb([width, height])
-        let aabbvec: Vec = [0, 0, 0];
-        let centeredRect = rectFromCentroid(aabbvec, 4);
         const shape = vertices(rect([width, height]), 4);
         fuzzyPoly(
           shape,
@@ -328,13 +332,11 @@ const Canvas = ({ width, height, children }: CanvasProps) => {
                   translateX,
                   size.height / 2 - y / 4, //4 keeps frame always in canvas
                 ],
-                strokeWidth: 20,
                 stroke: "#8B0000",
               },
               {
-                //size: 10,
-                jitter: 0.25,
-                curveScale: 0.05,
+                jitter: 0.0,
+                curveScale: 0.0125,
                 //fill: defHatchPen("#8B0000", "d", 1, 2),
                 //jitter: 0.125
               }
@@ -350,7 +352,7 @@ const Canvas = ({ width, height, children }: CanvasProps) => {
           height
         ); */
         ctx.strokeStyle = "darkred";
-        ctx.lineWidth = 5; //control thi.ng lib polygon thickness through regular canvas api
+        ctx.lineWidth = 5; //control thi.ng lib polygon line thickness through canvas api
         ctx.stroke();
 
         requestAnimationFrame(() => {
