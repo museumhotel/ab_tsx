@@ -92,8 +92,11 @@ export default function AnimatedCanvas({
     //position.y = size.height /2
     let width = size.width / 2;
     let height = size.height / 2;
-    let xOffset = Math.sin(randomRectRef.current + size.width) * size.width;
-    let yOffset = height * Math.cos(randomRectRef.current / 2);
+    let xOffset = width * Math.sin(randomRectRef.current);
+    let yOffset = height * Math.sin(randomRectRef.current);
+
+    let xOffset2 = size.width * Math.cos(randomRectRef.current / 2);
+    let yOffset2 = size.height * Math.cos(randomRectRef.current / 2);
     //let yPos = position.y
     //if statement to handle when rect is off screen to bring it back
     //xOffset + 10;
@@ -105,6 +108,12 @@ export default function AnimatedCanvas({
     ctx.restore();
     ctx.strokeStyle = "darkblue";
     ctx.strokeRect(size.width / 2, yOffset, width / 2, height / 2);
+    ctx.save();
+    ctx.strokeStyle = "darkgreen";
+    ctx.strokeRect(xOffset2, size.height / 8, width / 2, height / 2);
+    ctx.restore();
+    ctx.strokeStyle = "darkorange";
+    ctx.strokeRect(size.width / 8, yOffset2, width / 2, height / 2);
     ctx.lineWidth = 5;
   }
 
