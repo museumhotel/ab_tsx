@@ -84,23 +84,28 @@ export default function AnimatedCanvas({
     ctx: CanvasRenderingContext2D,
     deltaTime: number
   ): void {
-    randomRectRef.current += deltaTime * 0.01;
+    randomRectRef.current += deltaTime * 0.0025;
 
     if (randomRectRef.current > 2 * Math.PI) {
       randomRectRef.current -= 2 * Math.PI;
     }
     //position.y = size.height /2
-    let xOffset = size.width * Math.cos(randomRectRef.current / 2);
-    //let yPos = position.y
     let width = size.width / 2;
     let height = size.height / 2;
+    let xOffset = Math.sin(randomRectRef.current + size.width) * size.width;
+    let yOffset = height * Math.cos(randomRectRef.current / 2);
+    //let yPos = position.y
     //if statement to handle when rect is off screen to bring it back
+    //xOffset + 10;
 
     ctx.beginPath();
-    ctx.rect(xOffset, size.height / 2, width / 2, height / 2);
+    ctx.save();
     ctx.strokeStyle = "darkred";
+    ctx.strokeRect(xOffset, size.height / 2, width / 2, height / 2);
+    ctx.restore();
+    ctx.strokeStyle = "darkblue";
+    ctx.strokeRect(size.width / 2, yOffset, width / 2, height / 2);
     ctx.lineWidth = 5;
-    ctx.stroke();
   }
 
   return (
