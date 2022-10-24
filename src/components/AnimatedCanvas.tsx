@@ -78,8 +78,12 @@ export default function AnimatedCanvas({
     deltaTime: number
   ): void {
     randomRectRef.current += deltaTime * 0.01;
+
+    if (randomRectRef.current > 2 * Math.PI) {
+      randomRectRef.current -= 2 * Math.PI;
+    }
     //position.y = size.height /2
-    let xOffset = randomRectRef.current * Math.sin(deltaTime * 0.0005);
+    let xOffset = size.width * Math.cos(randomRectRef.current);
     //let yPos = position.y
     let width = size.width / 2;
     let height = size.height / 2;
