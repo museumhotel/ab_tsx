@@ -7,7 +7,13 @@ import {
   vertices,
 } from "@thi.ng/geom";
 import { defHatchPen, fuzzyPoly } from "@thi.ng/geom-fuzz";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import styled from "styled-components";
 import useWindowSize from "../hooks/useWindowSize";
 import { draw } from "@thi.ng/hiccup-canvas/draw";
@@ -53,6 +59,8 @@ const Canvas = ({ width, height, children }: CanvasProps) => {
     undefined
   );
 
+  const [sketchIsRunning, setSketchIsRunning] = useState(false);
+
   const [isMouseOnCanvas, setIsMouseOnCanvas] = useState(false);
   const [maxFrameSize, setMaxFrameSize] = useState<
     MaxRectDimensions | undefined
@@ -60,6 +68,9 @@ const Canvas = ({ width, height, children }: CanvasProps) => {
   const [framePosition, setFramePosition] = useState<Coordinate | undefined>(
     undefined
   );
+
+  //start the sketch when canvaselem is visible
+  const startSketch = useMemo(() => {}, []);
 
   //wrap fnction in useCallback to to use in useEffect dependency array
   const startPaint = useCallback((event: MouseEvent) => {
