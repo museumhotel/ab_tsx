@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
+import useOnScreen from "../hooks/useOnScreen";
 import useWindowSize from "../hooks/useWindowSize";
 
 const StyledCanvas = styled.canvas`
@@ -40,7 +41,13 @@ export default function AnimatedCanvas({
 
   const animationFrameRequestRef = useRef<number | null>(null);
 
-  //animate sketch logic
+  const isOnScreen = useOnScreen(canvasRef);
+
+  if (isOnScreen) {
+    //console.log({ isOnScreen });
+  }
+
+  //animation frames
   useEffect(() => {
     lastRenderTimeRef.current = Date.now();
     animationFrameRequestRef.current = requestAnimationFrame(renderFrame);
@@ -50,7 +57,7 @@ export default function AnimatedCanvas({
         cancelAnimationFrame(animationFrameRequestRef.current);
       }
     };
-  }, []);
+  }, [!isOnScreen]); //run animation if canvas is showing
 
   //track the cursor positions and rerender on change
   /* useEffect(() => {
@@ -83,7 +90,7 @@ export default function AnimatedCanvas({
       randomRectRef.current -= 2 * Math.PI;
     }
     //position.y = size.height /2
-    let xOffset = size.width * Math.cos(randomRectRef.current);
+    let xOffset = size.width * Math.cos(randomRectRef.current / 2);
     //let yPos = position.y
     let width = size.width / 2;
     let height = size.height / 2;
