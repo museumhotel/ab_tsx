@@ -89,18 +89,40 @@ export default function AnimatedCanvas({
     if (randomRectRef.current > 2 * Math.PI) {
       randomRectRef.current -= 2 * Math.PI;
     }
-    //position.y = size.height /2
+
+    let strokeWidth = 10;
     let width = size.width / 2;
     let height = size.height / 2;
-    let xOffset = width * Math.sin(randomRectRef.current);
-    let yOffset = height * Math.sin(randomRectRef.current);
+    let xOffset = width * Math.sin(randomRectRef.current); //1 red
+    let yOffset = height * Math.sin(randomRectRef.current); //2 blue
 
-    let xOffset2 = size.width * Math.cos(randomRectRef.current / 2);
-    let yOffset2 = size.height * Math.cos(randomRectRef.current / 2);
-    //let yPos = position.y
-    //if statement to handle when rect is off screen to bring it back
-    //xOffset + 10;
+    let xOffset2 = size.width * Math.cos(randomRectRef.current / 2); //3 green
+    let yOffset2 = size.height * Math.cos(randomRectRef.current / 2); //4 orange
 
+    let rectText = ["Art \nBoyz.", "Art \nBoyz.", "Art \nBoyz.", "Art \nBoyz."];
+    let textSize = 25;
+
+    //let animateText = () => {
+    ctx.font = `${textSize}px sans-serif`;
+    //ctx.font = `50px sans-serif`;
+    let txtX = xOffset;
+    let txtY = size.height / 2;
+    //let splitTxt1 = rectText.frame1.split("\n")
+    let splitTxt1 = rectText[0].split("\n");
+
+    for (let i = 0; i < splitTxt1.length; i++) {
+      ctx.fillText(
+        splitTxt1[i],
+        txtX + textSize,
+        txtY + height / 2.5 + i * (strokeWidth + 2 + height / 4.5)
+      );
+    }
+
+    //console.log(splitTxt1);
+    //for (let i = 0; i<splitTxt1.length; i++) {}
+    //};
+
+    //animateText();
     ctx.beginPath();
     ctx.save();
     ctx.strokeStyle = "darkred";
@@ -114,7 +136,7 @@ export default function AnimatedCanvas({
     ctx.restore();
     ctx.strokeStyle = "darkorange";
     ctx.strokeRect(size.width / 8, yOffset2, width / 2, height / 2);
-    ctx.lineWidth = 5;
+    ctx.lineWidth = strokeWidth;
   }
 
   return (
