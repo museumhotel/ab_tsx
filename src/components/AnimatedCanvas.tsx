@@ -90,31 +90,52 @@ export default function AnimatedCanvas({
       randomRectRef.current -= 2 * Math.PI;
     }
 
-    let strokeWidth = 10;
-    let width = size.width / 2;
-    let height = size.height / 2;
-    let xOffset = width * Math.sin(randomRectRef.current); //1 red
-    let yOffset = height * Math.sin(randomRectRef.current); //2 blue
+    //variables for the dimensions of the canvas context
+    const fullCanvasWidth = size.width;
+    const fullCanvasHeight = size.height;
 
-    let xOffset2 = size.width * Math.cos(randomRectRef.current / 2); //3 green
-    let yOffset2 = size.height * Math.cos(randomRectRef.current / 2); //4 orange
+    //half dimensions for the canvas to be used in context of offsets for animation and positions of graphics
+    const canvasWidthHalved = size.width / 2;
+    const canvasHeightHalved = size.height / 2;
 
-    let rectText = ["Art \nBoyz.", "Art \nBoyz.", "Art \nBoyz.", "Art \nBoyz."];
+    //variables for declaring the full dimensions of shapes/ equates to half dimensions of canvas- will determine max dimensions when randomising params
+    let fullShapeWidth = canvasWidthHalved;
+    let fullShapeHeight = canvasHeightHalved;
+
+    //variables for half dimensions of the shapes/ quarter dimenions of the canvas
+    let shapeWidthHalved = fullShapeWidth / 2;
+    let shapeHeightHalved = fullShapeHeight / 2;
+
+    //offset positions for the animations
+    let xOffset = canvasWidthHalved * Math.sin(randomRectRef.current); //1 red
+    let yOffset = canvasHeightHalved * Math.sin(randomRectRef.current); //2 blue
+
+    let xOffset2 = fullCanvasWidth * Math.cos(randomRectRef.current / 2); //3 green
+    let yOffset2 = fullCanvasHeight * Math.cos(randomRectRef.current / 2); //4 orange
+
+    let logoText = "Art \nBoyz.";
     let textSize = 25;
+    let txtSizeHalved = textSize / 2;
+    let strokeWidth = 10;
 
     //let animateText = () => {
     ctx.font = `${textSize}px sans-serif`;
     //ctx.font = `50px sans-serif`;
     let txtX = xOffset;
-    let txtY = size.height / 2;
+    let txtY = canvasHeightHalved;
     //let splitTxt1 = rectText.frame1.split("\n")
-    let splitTxt1 = rectText[0].split("\n");
+    let splitTxt1 = logoText.split("\n");
+    let splitTxt2 = logoText.split("\n");
+    let splitTxt3 = logoText.split("\n");
+    let splitTxt4 = logoText.split("\n");
 
     for (let i = 0; i < splitTxt1.length; i++) {
       ctx.fillText(
         splitTxt1[i],
-        txtX + textSize,
-        txtY + height / 2.5 + i * (strokeWidth + 2 + height / 4.5)
+        txtX + txtSizeHalved,
+        txtY +
+          canvasHeightHalved / 2.5 +
+          i * (strokeWidth + 2 + canvasHeightHalved / 4.5)
       );
     }
 
@@ -126,16 +147,36 @@ export default function AnimatedCanvas({
     ctx.beginPath();
     ctx.save();
     ctx.strokeStyle = "darkred";
-    ctx.strokeRect(xOffset, size.height / 2, width / 2, height / 2);
+    ctx.strokeRect(
+      xOffset,
+      canvasHeightHalved,
+      shapeWidthHalved,
+      shapeHeightHalved
+    );
     ctx.restore();
     ctx.strokeStyle = "darkblue";
-    ctx.strokeRect(size.width / 2, yOffset, width / 2, height / 2);
+    ctx.strokeRect(
+      canvasWidthHalved,
+      yOffset,
+      shapeWidthHalved,
+      shapeHeightHalved
+    );
     ctx.save();
     ctx.strokeStyle = "darkgreen";
-    ctx.strokeRect(xOffset2, size.height / 8, width / 2, height / 2);
+    ctx.strokeRect(
+      xOffset2,
+      fullCanvasHeight / 8,
+      shapeWidthHalved,
+      shapeHeightHalved
+    );
     ctx.restore();
     ctx.strokeStyle = "darkorange";
-    ctx.strokeRect(size.width / 8, yOffset2, width / 2, height / 2);
+    ctx.strokeRect(
+      fullCanvasWidth / 8,
+      yOffset2,
+      shapeWidthHalved,
+      shapeHeightHalved
+    );
     ctx.lineWidth = strokeWidth;
   }
 
