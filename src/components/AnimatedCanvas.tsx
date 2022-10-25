@@ -106,6 +106,16 @@ export default function AnimatedCanvas({
     let shapeWidthHalved = fullShapeWidth / 2;
     let shapeHeightHalved = fullShapeHeight / 2;
 
+    //variables to hold shape dimensions randomised
+    let shapeWidth = getRandomNumber(
+      shapeWidthHalved / 2,
+      shapeWidthHalved / 1.5
+    );
+    let shapeHeight = getRandomNumber(
+      shapeHeightHalved * 1.5,
+      shapeHeightHalved * 1.75
+    );
+
     //offset positions for the animations
     let xOffset = canvasWidthHalved * Math.sin(randomRectRef.current); //1 red
     let yOffset = canvasHeightHalved * Math.sin(randomRectRef.current); //2 blue
@@ -120,7 +130,6 @@ export default function AnimatedCanvas({
 
     //let animateText = () => {
     ctx.font = `${textSize}px sans-serif`;
-    //ctx.font = `50px sans-serif`;
     let txtX = xOffset;
     let txtY = canvasHeightHalved;
     //let splitTxt1 = rectText.frame1.split("\n")
@@ -134,8 +143,8 @@ export default function AnimatedCanvas({
         splitTxt1[i],
         txtX + txtSizeHalved,
         txtY +
-          canvasHeightHalved / 2.5 +
-          i * (strokeWidth + 2 + canvasHeightHalved / 4.5)
+          shapeHeight / 1.25 +
+          i * (strokeWidth + (1.25 * canvasHeightHalved) / 4.5)
       );
     }
 
@@ -144,16 +153,29 @@ export default function AnimatedCanvas({
     //};
 
     //animateText();
-    ctx.beginPath();
+    //ctx.beginPath();
     ctx.save();
     ctx.strokeStyle = "darkred";
+    /* if (xOffset < fullCanvasWidth) {
+      xOffset += canvasWidthHalved / 4;
+      shapeWidthHalved = shapeWidth;
+      shapeHeightHalved = shapeHeight;
+    } */
     ctx.strokeRect(
       xOffset,
       canvasHeightHalved,
-      shapeWidthHalved,
-      shapeHeightHalved
+      shapeWidth,
+      //shapeWidthHalved,
+      shapeHeight
+      //shapeHeightHalved
     );
+
     ctx.restore();
+    /* if (yOffset < fullCanvasHeight) {
+      yOffset += canvasHeightHalved / 4;
+      shapeWidthHalved = shapeWidth;
+      shapeHeightHalved = shapeHeight;
+    } */
     ctx.strokeStyle = "darkblue";
     ctx.strokeRect(
       canvasWidthHalved,
