@@ -1,3 +1,6 @@
+import { center, rect, vertices } from "@thi.ng/geom";
+import { defHatchPen, fuzzyPoly } from "@thi.ng/geom-fuzz";
+import { draw } from "@thi.ng/hiccup-canvas/draw";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import useOnScreen from "../hooks/useOnScreen";
@@ -65,25 +68,31 @@ export default function AnimatedCanvas({
   }, [cursorPosition]); */
 
   function renderFrame(): void {
-    const ctx = canvasRef.current?.getContext("2d");
+    const ctx = canvasRef.current!.getContext("2d");
     if (ctx != null) {
       const timeNow = Date.now();
       const deltaTime = timeNow - lastRenderTimeRef.current;
       clearBackground(ctx);
-      drawMovingRandomRect(ctx, deltaTime);
       lastRenderTimeRef.current = timeNow;
+
+      if (isOnScreen) {
+        drawMovingRects(ctx, deltaTime);
+      }
     }
-    animationFrameRequestRef.current = requestAnimationFrame(renderFrame); //call funciton recursively
+    animationFrameRequestRef.current = requestAnimationFrame(renderFrame); //call function recursively
   }
 
   function clearBackground(ctx: CanvasRenderingContext2D): void {
     ctx.clearRect(0, 0, size.width, size.height);
   }
 
-  function drawMovingRandomRect(
+  function drawMovingRects(
     ctx: CanvasRenderingContext2D,
     deltaTime: number
   ): void {
+    if (!canvasRef.current) {
+      return;
+    }
     randomRectRef.current += deltaTime * 0.0025;
 
     if (randomRectRef.current > 2 * Math.PI) {
@@ -129,46 +138,63 @@ export default function AnimatedCanvas({
     let strokeWidth = 10;
 
     //let animateText = () => {
-    ctx.font = `${textSize}px sans-serif`;
-    let txtX = xOffset;
-    let txtY = canvasHeightHalved;
-    //let splitTxt1 = rectText.frame1.split("\n")
-    let splitTxt1 = logoText.split("\n");
-    let splitTxt2 = logoText.split("\n");
-    let splitTxt3 = logoText.split("\n");
-    let splitTxt4 = logoText.split("\n");
-
-    for (let i = 0; i < splitTxt1.length; i++) {
-      ctx.fillText(
-        splitTxt1[i],
-        txtX + txtSizeHalved,
-        txtY +
-          shapeHeight / 1.25 +
-          i * (strokeWidth + (1.25 * canvasHeightHalved) / 4.5)
-      );
-    }
 
     //console.log(splitTxt1);
-    //for (let i = 0; i<splitTxt1.length; i++) {}
     //};
 
     //animateText();
     //ctx.beginPath();
     ctx.save();
-    ctx.strokeStyle = "darkred";
+    ctx.shadowColor = "rgba(54, 0, 0, 0.8)";
+    ctx.shadowBlur = 16;
+    //ctx.shadowOffsetX = textSize * 2;
+    let logo1 = vertices(rect([shapeWidthHalved, shapeHeightHalved]), 4);
+    /* if (xOffset < fullCanvasWidth) {
+      //xOffset += canvasWidthHalved / 4;
+      shapeWidthHalved = shapeWidth;
+      shapeHeightHalved = shapeHeight;
+    } */
+    let logo1Stroke = "darkred";
+    let logo1Tracker = canvasWidthHalved * Math.sin(randomRectRef.current);
+    //console.log(logo1Tracker);
+    if (logo1Tracker >= canvasWidthHalved) {
+      logo1Stroke = "cyan";
+      //logo1Tracker = fullCanvasWidth + 1;
+    }
+    if (logo1Tracker >= canvasWidthHalved) {
+      logo1Stroke = "pink";
+    }
+
+    draw(
+      ctx,
+      center(
+        fuzzyPoly(
+          logo1,
+          {
+            translate: [xOffset, canvasHeightHalved + shapeHeightHalved / 2],
+            stroke: logo1Stroke,
+          },
+          {
+            jitter: 5,
+            curveScale: 0.0125,
+            fill: defHatchPen("#e1e1e1", "d", 1, 2),
+          }
+        )
+      )
+    );
     /* if (xOffset < fullCanvasWidth) {
       xOffset += canvasWidthHalved / 4;
       shapeWidthHalved = shapeWidth;
       shapeHeightHalved = shapeHeight;
     } */
-    ctx.strokeRect(
+    /* ctx.strokeRect(
       xOffset,
       canvasHeightHalved,
       shapeWidth,
       //shapeWidthHalved,
       shapeHeight
       //shapeHeightHalved
-    );
+    ); */
 
     ctx.restore();
     /* if (yOffset < fullCanvasHeight) {
@@ -200,6 +226,25 @@ export default function AnimatedCanvas({
       shapeHeightHalved
     );
     ctx.lineWidth = strokeWidth;
+
+    ctx.font = `${textSize}px sans-serif`;
+    let txtX = xOffset;
+    let txtY = canvasHeightHalved;
+    //let splitTxt1 = rectText.frame1.split("\n")
+    let splitTxt1 = logoText.split("\n");
+    let splitTxt2 = logoText.split("\n");
+    let splitTxt3 = logoText.split("\n");
+    let splitTxt4 = logoText.split("\n");
+
+    for (let i = 0; i < splitTxt1.length; i++) {
+      ctx.fillText(
+        splitTxt1[i],
+        txtX - shapeWidthHalved / 4.5,
+        txtY +
+          shapeHeight / 2 +
+          i * (strokeWidth + (1.25 * canvasHeightHalved) / 4.5)
+      );
+    }
   }
 
   return (
