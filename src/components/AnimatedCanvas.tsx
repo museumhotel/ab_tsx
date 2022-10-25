@@ -145,25 +145,42 @@ export default function AnimatedCanvas({
     //animateText();
     //ctx.beginPath();
     ctx.save();
-    ctx.shadowColor = "rgba(54, 0, 0, 0.8)";
-    ctx.shadowBlur = 16;
-    //ctx.shadowOffsetX = textSize * 2;
+
     let logo1 = vertices(rect([shapeWidthHalved, shapeHeightHalved]), 4);
     /* if (xOffset < fullCanvasWidth) {
       //xOffset += canvasWidthHalved / 4;
       shapeWidthHalved = shapeWidth;
       shapeHeightHalved = shapeHeight;
     } */
-    let logo1Stroke = "darkred";
-    let logo1Tracker = canvasWidthHalved * Math.sin(randomRectRef.current);
-    //console.log(logo1Tracker);
-    if (logo1Tracker >= canvasWidthHalved) {
-      logo1Stroke = "cyan";
+    //constrain to absolute & positive intergers only
+    let logo1XValueTracker = Math.floor(
+      Math.abs(
+        ((canvasWidthHalved * Math.sin(randomRectRef.current)) / 360) * 100
+      )
+    );
+    let logo1HSLValues = {
+      h: getRandomNumber(0, 10),
+      s: getRandomNumber(80, 100),
+      l: getRandomNumber(0, 50),
+    };
+    let logo1VariableColour = `hsl(0, ${getRandomNumber(
+      0,
+      10
+    )}%, ${logo1XValueTracker}%)`;
+    let logo1ShadowColor = `hsl(0, 100%, ${getRandomNumber(10, 30)}%)`;
+    ctx.shadowColor = logo1ShadowColor;
+    //ctx.shadowColor = "rgba(54, 0, 0, 0.8)";
+    //ctx.shadowColor = logo1Shadow;
+    ctx.shadowBlur = logo1XValueTracker / 4;
+    //ctx.shadowOffsetX = textSize * 2;
+    //console.log(logo1XValueTracker);
+    /* if (logo1Tracker > 90.0) {
+      logo1Shadow = "cyan";
       //logo1Tracker = fullCanvasWidth + 1;
     }
-    if (logo1Tracker >= canvasWidthHalved) {
-      logo1Stroke = "pink";
-    }
+    if (logo1Tracker < 60.0) {
+      logo1Shadow = "pink";
+    } */
 
     draw(
       ctx,
@@ -172,12 +189,13 @@ export default function AnimatedCanvas({
           logo1,
           {
             translate: [xOffset, canvasHeightHalved + shapeHeightHalved / 2],
-            stroke: logo1Stroke,
+            //stroke: "darkred",
+            stroke: logo1VariableColour,
           },
           {
             jitter: 5,
             curveScale: 0.0125,
-            fill: defHatchPen("#e1e1e1", "d", 1, 2),
+            fill: defHatchPen("#e1e1e1", "d", 1, 6.25),
           }
         )
       )
