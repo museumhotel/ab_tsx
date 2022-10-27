@@ -1,13 +1,22 @@
 import styled, { createGlobalStyle, css } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
-    html,
+html,
     body {
         padding: 0;
         margin: 0;
         overflow: hidden;
-        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+
+  @font-face {
+    font-family: "Boom4Real";
+    src: local("Boom4Real"), local("Boom4Real"),
+    url("/assets/fonts/Boom4Real.woff") format("woff"),
+    url("/assets/fonts/Boom4Real.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+
+}
     }
 `;
 
@@ -38,4 +47,5 @@ export const Footer = styled.footer`
 export const FooterText = styled.p`
   position: absolute;
   left: 50%;
+  font-family: "Boom4Real";
 `;

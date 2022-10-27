@@ -20,7 +20,8 @@
     "**/*.ts",
     "**/*.tsx",
     "src/styles/styles.js",
-    "src/components/Link.tsx"
+    "src/components/Link.tsx",
+    "src/fonts/fonts.ts"
   ],
   "exclude": ["node_modules"]
 }

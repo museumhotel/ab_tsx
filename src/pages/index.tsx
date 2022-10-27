@@ -3,7 +3,6 @@ import Head from "next/head";
 import Image from "next/image";
 import styled from "styled-components";
 import styles from "../styles/Home.module.css";
-import { GlobalStyle } from "../styles/styles";
 import { Layout } from "../components/Layout";
 
 const Title = styled.h1`

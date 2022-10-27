@@ -8,6 +8,7 @@ import useWindowSize from "../hooks/useWindowSize";
 
 const StyledCanvas = styled.canvas`
   grid-area: canvas;
+  font-family: "Boom4Real";
 `;
 
 interface Point2D {
@@ -132,12 +133,12 @@ export default function AnimatedCanvas({
     let xOffset2 = fullCanvasWidth * Math.cos(randomRectRef.current / 2); //3 green
     let yOffset2 = fullCanvasHeight * Math.cos(randomRectRef.current / 2); //4 orange
 
-    let logoText = "Art \nBoyz.";
-    let textSize = 25;
+    let logoText = "ART \nBOYZ.";
+    let textSize = 15;
     let txtSizeHalved = textSize / 2;
-    let strokeWidth = 10;
+    let strokeWidth = 2.5;
 
-    ctx.font = `${textSize}px sans-serif`;
+    ctx.font = `${textSize}px "Boom4Real"`; //add font
     let txtX = xOffset;
     let txtY = canvasHeightHalved;
 
@@ -274,16 +275,16 @@ export default function AnimatedCanvas({
     let logo3XValueTracker = Math.floor(Math.abs((xOffset2 / 360) * 100));
 
     let logo3VariableColour = `hsl(120, 
-        100%, ${logo3XValueTracker}%)`;
+        ${logo3XValueTracker}%, ${getRandomNumber(0, 50)}%)`;
 
     let logo3ShadowColor = `hsl(0, ${getRandomNumber(
       0,
       10
     )}%, ${logo3XValueTracker}%)`;
 
-    //ctx.shadowColor = logo3ShadowColor;
+    ctx.shadowColor = logo3ShadowColor;
 
-    //ctx.shadowBlur = logo3XValueTracker;
+    ctx.shadowBlur = logo3XValueTracker / 2;
 
     draw(
       ctx,
