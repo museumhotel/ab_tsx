@@ -1,5 +1,5 @@
-import { center, rect, vertices } from "@thi.ng/geom";
-import { defHatchPen, fuzzyPoly } from "@thi.ng/geom-fuzz";
+import { center, flip, rect, star, vertices } from "@thi.ng/geom";
+import { compFill, defHatchPen, fuzzyPoly } from "@thi.ng/geom-fuzz";
 import { draw } from "@thi.ng/hiccup-canvas/draw";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
@@ -134,13 +134,13 @@ export default function AnimatedCanvas({
     let yOffset2 = fullCanvasHeight * Math.cos(randomRectRef.current / 2); //4 orange
 
     let logoText = "ART \nBOYZ.";
-    let textSize = 15;
+    let textSize = 12.5;
     let txtSizeHalved = textSize / 2;
     let strokeWidth = 2.5;
 
     ctx.font = `${textSize}px "Boom4Real"`; //add font
-    let txtX = xOffset;
-    let txtY = canvasHeightHalved;
+    let txtX = 0;
+    let txtY = 0;
 
     //let animateText = () => {
 
@@ -151,6 +151,8 @@ export default function AnimatedCanvas({
     //ctx.beginPath();
     ctx.save();
     let splitTxt1 = logoText.split("\n");
+    txtX = xOffset;
+    txtY = canvasHeightHalved;
 
     let logo1 = vertices(rect([shapeWidthHalved, shapeHeightHalved]), 4);
 
@@ -161,9 +163,9 @@ export default function AnimatedCanvas({
       10
     )}%, ${logo1XValueTracker}%)`;
     let logo1ShadowColor = `hsl(0, 100%, ${getRandomNumber(10, 30)}%)`;
-    ctx.shadowColor = logo1ShadowColor;
+    //ctx.shadowColor = logo1ShadowColor;
     //ctx.shadowColor = "rgba(54, 0, 0, 0.8)";
-    ctx.shadowBlur = logo1XValueTracker / 4;
+    //ctx.shadowBlur = logo1XValueTracker / 4;
     //console.log(logo1XValueTracker);
 
     /* if (logo1Tracker > 90.0) {
@@ -213,21 +215,24 @@ export default function AnimatedCanvas({
 
     ctx.restore();
     ctx.save();
+    let splitTxt2 = logoText.split("\n");
+    txtX = canvasWidthHalved;
+    txtY = yOffset;
+
     let logo2 = vertices(rect([shapeWidthHalved, shapeHeightHalved]), 4);
 
     let logo2YValueTracker = Math.floor(Math.abs((yOffset / 360) * 100));
 
     let logo2VariableColour = `hsl(240, 
-        100%, ${logo2YValueTracker}%)`;
+        ${getRandomNumber(0, 25)}%, ${logo2YValueTracker}%)`;
 
-    let logo2ShadowColor = `hsl(0, ${getRandomNumber(
-      0,
-      10
-    )}%, ${logo2YValueTracker}%)`;
+    let logo2ShadowColor = `hsl(0, ${getRandomNumber(0, 10)}%, ${
+      logo2YValueTracker * 2
+    }%)`;
 
-    ctx.shadowColor = logo2ShadowColor;
+    //ctx.shadowColor = logo2ShadowColor;
 
-    ctx.shadowBlur = logo2YValueTracker;
+    //ctx.shadowBlur = logo2YValueTracker;
 
     draw(
       ctx,
@@ -237,24 +242,26 @@ export default function AnimatedCanvas({
           {
             translate: [canvasWidthHalved + shapeWidthHalved / 2, yOffset],
             //stroke: "darkblue",
-            stroke: logo2VariableColour,
+            stroke: logo2ShadowColor,
           },
           {
             jitter: 10,
             curveScale: 0.0125,
-            fill: defHatchPen("#e1e1e1", "h", 1, 6.25),
+            fill: defHatchPen(logo2VariableColour, "h", 1, 5),
+
+            /* compFill(
+              defHatchPen(logo2VariableColour, "v", 1, 12.5),
+              defHatchPen("#e1e1e1", "h", 1, 6.25)
+            ), */
           }
         )
       )
     );
 
-    let splitTxt2 = logoText.split("\n");
-    txtX = canvasWidthHalved;
-    txtY = yOffset;
     for (let i = 0; i < splitTxt2.length; i++) {
       ctx.fillText(
         splitTxt2[i],
-        txtX + shapeWidthHalved / 2.75,
+        txtX + shapeWidthHalved / getRandomNumber(2.75, 4),
         txtY +
           shapeHeight / 4.75 +
           i * (strokeWidth + (1.25 * canvasHeightHalved) / 4.75)
@@ -270,6 +277,10 @@ export default function AnimatedCanvas({
     ); */
     ctx.restore();
     ctx.save();
+    let splitTxt3 = logoText.split("\n");
+    txtX = xOffset2;
+    txtY = canvasHeightHalved;
+
     let logo3 = vertices(rect([shapeWidthHalved, shapeHeightHalved]), 4);
 
     let logo3XValueTracker = Math.floor(Math.abs((xOffset2 / 360) * 100));
@@ -279,12 +290,15 @@ export default function AnimatedCanvas({
 
     let logo3ShadowColor = `hsl(0, ${getRandomNumber(
       0,
-      10
+      2.5
     )}%, ${logo3XValueTracker}%)`;
 
-    ctx.shadowColor = logo3ShadowColor;
+    //ctx.shadowColor = logo3ShadowColor;
 
-    ctx.shadowBlur = logo3XValueTracker / 2;
+    //ctx.shadowBlur = logo3XValueTracker / 2;
+
+    let sx = -0.6;
+    let sy = 0;
 
     draw(
       ctx,
@@ -292,21 +306,40 @@ export default function AnimatedCanvas({
         fuzzyPoly(
           logo3,
           {
-            translate: [
+            //rotate: logo3XValueTracker * 0.05,
+            //translate: [canvasWidthHalved, canvasHeightHalved],
+            transform: [
+              1,
+              sy,
+              sx,
+              1,
               xOffset2,
               ((canvasHeightHalved / 20) * 2) ^ +shapeHeightHalved,
             ],
+            /* translate: [
+                xOffset2,
+                ((canvasHeightHalved / 20) * 2) ^ +shapeHeightHalved,
+              ], */
             //stroke: "darkgreen",
-            stroke: logo3VariableColour,
+            stroke: logo3ShadowColor,
           },
           {
-            jitter: 10,
-            curveScale: 0.0125,
-            fill: defHatchPen("#e1e1e1", "d", 1, 6.25),
+            jitter: 3,
+            curveScale: 0.05,
+            fill: defHatchPen(logo3VariableColour, "d", 1, 8.5),
           }
         )
       )
     );
+
+    for (let i = 0; i < splitTxt3.length; i++) {
+      ctx.fillText(
+        splitTxt3[i],
+        txtX - shapeWidth / getRandomNumber(4, 4.5),
+        (txtY + shapeHeight) / 2.75 +
+          i * (strokeWidth + (1.25 * canvasHeightHalved) / 8)
+      );
+    }
 
     /* ctx.strokeStyle = "darkgreen";
     ctx.strokeRect(
@@ -328,7 +361,6 @@ export default function AnimatedCanvas({
     ctx.lineWidth = strokeWidth;
 
     //let splitTxt1 = rectText.frame1.split("\n")
-    let splitTxt3 = logoText.split("\n");
     let splitTxt4 = logoText.split("\n");
   }
 

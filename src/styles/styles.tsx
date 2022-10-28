@@ -15,7 +15,36 @@ html,
     font-style: normal;
     font-weight: 400;
     font-display: swap;
+}
 
+@font-face {
+    font-family: "CorporateGothic";
+    src: local("CorporateGothic"),
+    url("/assets/fonts/CorporateGothicRegular.ttf") format("truetype"),
+    url("/assets/fonts/CorporateGothicRegularWoff.woff") format("woff");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Waliny";
+    src: local("Waliny"),
+    url("/assets/fonts/Waliny.ttf") format("truetype"),
+    url("/assets/fonts/WalinyWoff.woff") format("woff");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "XTypeWriter";
+    src: local("XTypeWriter"),
+    url("/assets/fonts/XTypewriterTTF.ttf") format("truetype"),
+    url("/assets/fonts/XTypewriter-Regular-1964.woff") format("woff"), url("/assets/fonts/XTypewriter-Regular-e6c3.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
 }
     }
 `;

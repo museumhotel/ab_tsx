@@ -39,6 +39,27 @@ export default class MyDocument extends Document {
             type="font/woff"
             crossOrigin=""
           />
+          <link
+            rel="preload"
+            href="public/assets/fonts/CorporateGothicRegularWoff.woff"
+            as="font"
+            type="font/woff"
+            crossOrigin=""
+          />
+          <link
+            rel="preload"
+            href="public/assets/fonts/WalinyWoff.woff"
+            as="font"
+            type="font/woff"
+            crossOrigin=""
+          />
+          <link
+            rel="preload"
+            href="public/assets/fonts/XTypewriter-Regular-1964.woff"
+            as="font"
+            type="font/woff"
+            crossOrigin=""
+          />
         </Head>
         <body>
           <Main />

@@ -4,31 +4,43 @@ import CustomLink from "./Link";
 
 const ButtonTL = styled.div`
   grid-area: tLButton;
-  background-color: black;
+  background-color: #e1e1e1;
+  //background-color: lightgrey;
   padding: 1rem;
-  font-family: "Boom4Real";
-  font-size: 1rem;
+  font-family: "CorporateGothic", sans-serif;
+  //font-family: sans-serif;
+  //font-family: "Courier New", Courier, monospace;
+  font-size: 1.5rem;
 `;
 const ButtonTR = styled.div`
   grid-area: tRButton;
-  background-color: black;
+  background-color: #e1e1e1;
+  //background-color: lightgrey;
   padding: 1rem;
-  font-family: "Boom4Real";
-  font-size: 1rem;
+  font-family: "CorporateGothic", sans-serif;
+  //font-family: sans-serif;
+  //font-family: "Courier New", Courier, monospace;
+  font-size: 1.5rem;
 `;
 const ButtonBL = styled.div`
   grid-area: bLButton;
-  background-color: black;
+  background-color: #e1e1e1;
+  //background-color: lightgrey;
   padding: 1rem;
-  font-family: "Boom4Real";
-  font-size: 1rem;
+  font-family: "CorporateGothic", sans-serif;
+  //font-family: sans-serif;
+  //font-family: "Courier New", Courier, monospace;
+  font-size: 1.5rem;
 `;
 const ButtonBR = styled.div`
   grid-area: bRButton;
-  background-color: black;
+  background-color: #e1e1e1;
+  //background-color: lightgrey;
   padding: 1rem;
-  font-family: "Boom4Real";
-  font-size: 1rem;
+  font-family: "CorporateGothic", sans-serif;
+  //font-family: sans-serif;
+  //font-family: "Courier New", Courier, monospace;
+  font-size: 1.5rem;
 `;
 
 const NavButtons: React.FC = () => {

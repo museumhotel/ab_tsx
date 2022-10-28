@@ -17,7 +17,7 @@ const StyledLink = styled.a`
     text-decoration: none;
   }
 
-  color: white;
+  color: black;
 `;
 
 interface LinkProps
