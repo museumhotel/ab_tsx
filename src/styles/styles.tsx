@@ -1,11 +1,16 @@
 import styled, { createGlobalStyle, css } from "styled-components";
+import { mediaQueries } from "./mediaQueries";
+//import { devices } from "./breakpoints";
 
 export const GlobalStyle = createGlobalStyle`
+
 html,
     body {
-        padding: 0;
-        margin: 0;
+        //padding: 0;
+        margin: 0 auto;
         overflow: hidden;
+        max-width: 1440px;
+        height: 100vh;
 
   @font-face {
     font-family: "Boom4Real";
@@ -46,21 +51,28 @@ html,
     font-weight: 400;
     font-display: swap;
 }
+
+
     }
 `;
 
 export const AppContainer = styled.div`
   display: grid;
-  padding: 0.25%;
+  //padding: 0.25%;
   height: 100vh;
   place-items: center;
   grid-template-columns: minmax(10px, 25%) 1fr minmax(10px, 25%);
-  grid-template-rows: minmax(10px, 15%) 2fr minmax(10px, 15%) 10%;
+  grid-template-rows: minmax(10px, 15%) 2fr minmax(10px, 15%) 5%;
   grid-template-areas:
     "tLButton . tRButton"
     ". canvas ."
     "bLButton . bRButton"
     "footer footer footer";
+
+  ${mediaQueries("sm")`
+      padding-right: 5%;
+      padding-left: 2.5%;
+    `}
 `;
 
 export const Canvas = styled.canvas`

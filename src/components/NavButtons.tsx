@@ -41,6 +41,8 @@ const ButtonBR = styled.div`
   //font-family: sans-serif;
   //font-family: "Courier New", Courier, monospace;
   font-size: 1.5rem;
+
+  //@media only screen
 `;
 
 const NavButtons: React.FC = () => {

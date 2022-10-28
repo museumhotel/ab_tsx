@@ -297,7 +297,7 @@ export default function AnimatedCanvas({
 
     //ctx.shadowBlur = logo3XValueTracker / 2;
 
-    let sx = -0.6;
+    let sx = -0.5;
     let sy = 0;
 
     draw(
