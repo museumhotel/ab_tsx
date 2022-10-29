@@ -1,5 +1,5 @@
 import styled, { createGlobalStyle, css } from "styled-components";
-import { mediaQueries } from "./mediaQueries";
+import { mediaQueriesMax, mediaQueriesMin } from "./mediaQueries";
 //import { devices } from "./breakpoints";
 
 export const GlobalStyle = createGlobalStyle`
@@ -9,7 +9,7 @@ html,
         //padding: 0;
         margin: 0 auto;
         overflow: hidden;
-        max-width: 1440px;
+        //max-width: 1440px;
         height: 100vh;
 
   @font-face {
@@ -61,17 +61,22 @@ export const AppContainer = styled.div`
   //padding: 0.25%;
   height: 100vh;
   place-items: center;
-  grid-template-columns: minmax(10px, 25%) 1fr minmax(10px, 25%);
+  grid-template-columns: minmax(10px, 10%) 1fr minmax(10px, 10%);
   grid-template-rows: minmax(10px, 15%) 2fr minmax(10px, 15%) 5%;
   grid-template-areas:
     "tLButton . tRButton"
     ". canvas ."
     "bLButton . bRButton"
     "footer footer footer";
-
-  ${mediaQueries("sm")`
+  /* 
+  ${mediaQueriesMax("mobileS")`
+  //mostly affects buttons
       padding-right: 5%;
       padding-left: 2.5%;
+    `}; */
+
+  ${mediaQueriesMax("mobileL")`
+        grid-template-columns: minmax(10px,20%) 1fr minmax(10px,20%);
     `}
 `;
 
@@ -81,12 +86,14 @@ export const Canvas = styled.canvas`
 
 export const Footer = styled.footer`
   grid-area: footer;
-  border-top: 1px solid #eaeaea;
+  border-top: 1px solid #e1e1e1;
   place-self: stretch;
 `;
 
 export const FooterText = styled.p`
-  position: absolute;
-  left: 50%;
+  display: flex;
+  justify-content: center;
+  /* position: absolute;
+  left: 50%; */
   font-family: "Boom4Real";
 `;

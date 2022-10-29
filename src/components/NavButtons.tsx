@@ -11,6 +11,7 @@ const ButtonTL = styled.div`
   //font-family: sans-serif;
   //font-family: "Courier New", Courier, monospace;
   font-size: 1.5rem;
+  justify-self: self-start;
 `;
 const ButtonTR = styled.div`
   grid-area: tRButton;
@@ -21,6 +22,7 @@ const ButtonTR = styled.div`
   //font-family: sans-serif;
   //font-family: "Courier New", Courier, monospace;
   font-size: 1.5rem;
+  justify-self: self-end;
 `;
 const ButtonBL = styled.div`
   grid-area: bLButton;
@@ -31,6 +33,7 @@ const ButtonBL = styled.div`
   //font-family: sans-serif;
   //font-family: "Courier New", Courier, monospace;
   font-size: 1.5rem;
+  justify-self: self-start;
 `;
 const ButtonBR = styled.div`
   grid-area: bRButton;
@@ -41,7 +44,7 @@ const ButtonBR = styled.div`
   //font-family: sans-serif;
   //font-family: "Courier New", Courier, monospace;
   font-size: 1.5rem;
-
+  justify-self: self-end;
   //@media only screen
 `;
 

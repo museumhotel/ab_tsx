@@ -87,6 +87,21 @@ export default function AnimatedCanvas({
     ctx.clearRect(0, 0, size.width, size.height);
   }
 
+  useEffect(() => {
+    const ctx = canvasRef.current!.getContext("2d");
+    if (ctx !== null) {
+      function handleResize() {
+        ctx!.clearRect(0, 0, size.width, size.height);
+      }
+      canvasRef.current!.addEventListener("resize", handleResize);
+
+      handleResize();
+
+      return () =>
+        canvasRef.current!.removeEventListener("resize", handleResize);
+    }
+  }, []);
+
   function drawMovingRects(
     ctx: CanvasRenderingContext2D,
     deltaTime: number
@@ -103,6 +118,7 @@ export default function AnimatedCanvas({
     //variables for the dimensions of the canvas context
     const fullCanvasWidth = size.width;
     const fullCanvasHeight = size.height;
+    //console.log({ fullCanvasWidth, fullCanvasHeight });
 
     //half dimensions for the canvas to be used in context of offsets for animation and positions of graphics
     const canvasWidthHalved = size.width / 2;
@@ -111,6 +127,21 @@ export default function AnimatedCanvas({
     //variables for declaring the full dimensions of shapes/ equates to half dimensions of canvas- will determine max dimensions when randomising params
     let fullShapeWidth = canvasWidthHalved;
     let fullShapeHeight = canvasHeightHalved;
+
+    /* 
+    mobileS: 320, //20em 160 x 330.5
+    mobileL: 425, //26.5625em 212.5 x 330.5
+    tabletS: 768, //48em 384 x 330.5
+    tabletL: 960, //60em 480 x 330.5
+    laptop: 1024, //64em 512 x 330.5
+    desktopM: 1440, //90em 720 x 388.5
+    desktopL: 2560, //160em 1280 x 734
+    */
+
+    if (fullCanvasWidth < 430) {
+      fullShapeWidth = canvasWidthHalved * 2;
+      fullShapeHeight = canvasHeightHalved * 2;
+    }
 
     //variables for half dimensions of the shapes/ quarter dimenions of the canvas
     let shapeWidthHalved = fullShapeWidth / 2;

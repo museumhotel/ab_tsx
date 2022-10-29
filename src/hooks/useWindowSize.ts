@@ -16,6 +16,15 @@ function useWindowSize() {
           width: window.innerWidth / 2,
           height: window.innerHeight / 2,
         });
+        /* 
+        let ctx: CanvasRenderingContext2D;
+
+        function clearBackground(ctx: CanvasRenderingContext2D): void {
+          console.log(ctx);
+          ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        }
+        clearBackground(ctx!);
+         */
       }
       //listen for window resize evt
       window.addEventListener("resize", handleResize);
