@@ -1,7 +1,7 @@
 import { center, flip, rect, star, vertices } from "@thi.ng/geom";
 import { compFill, defHatchPen, fuzzyPoly } from "@thi.ng/geom-fuzz";
 import { draw } from "@thi.ng/hiccup-canvas/draw";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import useOnScreen from "../hooks/useOnScreen";
 import useWindowSize from "../hooks/useWindowSize";
@@ -51,6 +51,11 @@ export default function AnimatedCanvas({
     //console.log({ isOnScreen });
   }
 
+  const [dimensions, setDimensions] = useState({
+    width: size.width,
+    height: size.height,
+  });
+
   //animation frames
   useEffect(() => {
     lastRenderTimeRef.current = Date.now();
@@ -76,30 +81,54 @@ export default function AnimatedCanvas({
       clearBackground(ctx);
       lastRenderTimeRef.current = timeNow;
 
-      if (isOnScreen) {
-        drawMovingRects(ctx, deltaTime);
+      if (isOnScreen !== null) {
+        drawMovingRects(ctx!, deltaTime);
       }
     }
     animationFrameRequestRef.current = requestAnimationFrame(renderFrame); //call function recursively
   }
 
   function clearBackground(ctx: CanvasRenderingContext2D): void {
-    ctx.clearRect(0, 0, size.width, size.height);
+    ctx.clearRect(0, 0, dimensions.width, dimensions.height);
   }
 
+  /* const resizeCanvas = useCallback((e: ResizeObserver) => {
+
+  }) */
+
   useEffect(() => {
-    const ctx = canvasRef.current!.getContext("2d");
-    if (ctx !== null) {
-      function handleResize() {
-        ctx!.clearRect(0, 0, size.width, size.height);
-      }
-      canvasRef.current!.addEventListener("resize", handleResize);
-
-      handleResize();
-
-      return () =>
-        canvasRef.current!.removeEventListener("resize", handleResize);
+    if (!canvasRef.current) {
+      return;
     }
+    const ctx = canvasRef.current!.getContext("2d");
+    /*let canvasWidth = canvasRef.current!.width;
+    let canvasHeight = canvasRef.current!.height;
+
+    const canvas: HTMLCanvasElement = canvasRef.current;
+
+    //canvas.addEventListener("resize", handleResize);
+     function handleResize() {
+        //console.log({ canvasWidth, canvasHeight });
+        //ctx!.clearRect(0, 0, size.width, size.height);
+        clearBackground(ctx!);
+      } */
+    function handleResize() {
+      //const ctx = canvasRef.current!.getContext("2d");
+      clearBackground(ctx!);
+      //renderFrame();
+      //console.log(ctx);
+      setDimensions({
+        width: dimensions.width,
+        height: dimensions.height,
+      });
+    }
+    canvasRef.current!.addEventListener("resize", handleResize);
+
+    //handleResize();
+
+    return () =>
+      //canvasRef.current!.removeEventListener("resize", handleResize);
+      canvasRef.current!.removeEventListener("resize", handleResize);
   }, []);
 
   function drawMovingRects(
@@ -116,13 +145,13 @@ export default function AnimatedCanvas({
     }
 
     //variables for the dimensions of the canvas context
-    const fullCanvasWidth = size.width;
-    const fullCanvasHeight = size.height;
+    const fullCanvasWidth = dimensions.width;
+    const fullCanvasHeight = dimensions.height;
     //console.log({ fullCanvasWidth, fullCanvasHeight });
 
     //half dimensions for the canvas to be used in context of offsets for animation and positions of graphics
-    const canvasWidthHalved = size.width / 2;
-    const canvasHeightHalved = size.height / 2;
+    const canvasWidthHalved = fullCanvasWidth / 2;
+    const canvasHeightHalved = fullCanvasHeight / 2;
 
     //variables for declaring the full dimensions of shapes/ equates to half dimensions of canvas- will determine max dimensions when randomising params
     let fullShapeWidth = canvasWidthHalved;
@@ -138,10 +167,11 @@ export default function AnimatedCanvas({
     desktopL: 2560, //160em 1280 x 734
     */
 
-    if (fullCanvasWidth < 430) {
-      fullShapeWidth = canvasWidthHalved * 2;
-      fullShapeHeight = canvasHeightHalved * 2;
-    }
+    /* if (fullCanvasWidth < 430) {
+      size.width = size.width * 1.5;
+      //fullShapeWidth = canvasWidthHalved * 1.25;
+      //fullShapeHeight = canvasHeightHalved * 1.25;
+    } */
 
     //variables for half dimensions of the shapes/ quarter dimenions of the canvas
     let shapeWidthHalved = fullShapeWidth / 2;
@@ -398,8 +428,8 @@ export default function AnimatedCanvas({
   return (
     <StyledCanvas
       ref={canvasRef}
-      width={size.width}
-      height={size.height}
+      width={dimensions.width}
+      height={dimensions.height}
     ></StyledCanvas>
   );
 }

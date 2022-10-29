@@ -13,8 +13,10 @@ function useWindowSize() {
       function handleResize() {
         setWindowSize({
           //half so that canvas fits properly
-          width: window.innerWidth / 2,
-          height: window.innerHeight / 2,
+          width: (window.innerWidth / 2) * 1.5,
+          height: (window.innerHeight / 2) * 1.5,
+          /*width: window.innerWidth / 2,
+          height: window.innerHeight / 2,*/
         });
         /* 
         let ctx: CanvasRenderingContext2D;
