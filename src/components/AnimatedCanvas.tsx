@@ -110,24 +110,34 @@ export default function AnimatedCanvas({
     const canvasHeightHalved = fullCanvasHeight / 2;
 
     //variables for declaring the full dimensions of shapes/ equates to half dimensions of canvas- will determine max dimensions when randomising params
+    /* let fullShapeWidth = canvasWidthHalved;
+    let fullShapeHeight = canvasHeightHalved; */
     let fullShapeWidth = canvasWidthHalved;
     let fullShapeHeight = canvasHeightHalved;
 
     /* 
-    mobileS: 320, //20em 160 x 330.5
-    mobileL: 425, //26.5625em 212.5 x 330.5
-    tabletS: 768, //48em 384 x 330.5
-    tabletL: 960, //60em 480 x 330.5
-    laptop: 1024, //64em 512 x 330.5
-    desktopM: 1440, //90em 720 x 388.5
-    desktopL: 2560, //160em 1280 x 734
+    mobileS: 320, //20em 160 x 330.5 canvasW= 240
+    mobileL: 425, //26.5625em 212.5 x 330.5 canvasW= 318.75
+    tabletS: 768, //48em 384 x 330.5 canvasW= 576
+    tabletL: 960, //60em 480 x 330.5 canvasW= 720
+    laptop: 1024, //64em 512 x 330.5 canvasW= 768
+    desktopM: 1440, //90em 720 x 388.5 canvasW= 1080
+    desktopL: 2560, //160em 1280 x 734 canvasW= 1920
     */
+    //console.log(fullCanvasWidth);
 
-    /* if (fullCanvasWidth < 430) {
-      size.width = size.width * 1.5;
-      //fullShapeWidth = canvasWidthHalved * 1.25;
-      //fullShapeHeight = canvasHeightHalved * 1.25;
-    } */
+    if (fullCanvasWidth > 0 && fullCanvasWidth <= 240) {
+      //size.width = size.width * 1.5;
+      //animationFrameRequestRef.current = requestAnimationFrame(renderFrame);
+      //renderFrame();
+      fullShapeWidth = canvasWidthHalved * 1.25;
+      fullShapeHeight = canvasHeightHalved * 1.25;
+    }
+
+    if (fullCanvasWidth >= 241 && fullCanvasWidth <= 318.75) {
+      //fullShapeWidth = canvasWidthHalved * 1.5;
+      //fullShapeHeight = canvasHeightHalved * 1.5;
+    }
 
     //variables for half dimensions of the shapes/ quarter dimenions of the canvas
     let shapeWidthHalved = fullShapeWidth / 2;
