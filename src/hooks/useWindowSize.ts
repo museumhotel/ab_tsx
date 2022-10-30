@@ -10,6 +10,7 @@ function useWindowSize() {
     //evaluates to !undefined on client when there's window obj
     if (typeof window !== "undefined") {
       //as we have window, handle window resize
+
       function handleResize() {
         setWindowSize({
           //half so that canvas fits properly
@@ -18,15 +19,6 @@ function useWindowSize() {
           /*width: window.innerWidth / 2,
           height: window.innerHeight / 2,*/
         });
-        /* 
-        let ctx: CanvasRenderingContext2D;
-
-        function clearBackground(ctx: CanvasRenderingContext2D): void {
-          console.log(ctx);
-          ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-        }
-        clearBackground(ctx!);
-         */
       }
       //listen for window resize evt
       window.addEventListener("resize", handleResize);

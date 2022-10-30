@@ -45,16 +45,11 @@ export default function AnimatedCanvas({
 
   const animationFrameRequestRef = useRef<number | null>(null);
 
-  const isOnScreen = useOnScreen(canvasRef);
+  const isOnScreen = useOnScreen(canvasRef!);
 
   if (isOnScreen) {
     //console.log({ isOnScreen });
   }
-
-  const [dimensions, setDimensions] = useState({
-    width: size.width,
-    height: size.height,
-  });
 
   //animation frames
   useEffect(() => {
@@ -81,55 +76,16 @@ export default function AnimatedCanvas({
       clearBackground(ctx);
       lastRenderTimeRef.current = timeNow;
 
-      if (isOnScreen !== null) {
-        drawMovingRects(ctx!, deltaTime);
+      if (isOnScreen) {
+        drawMovingRects(ctx, deltaTime);
       }
     }
     animationFrameRequestRef.current = requestAnimationFrame(renderFrame); //call function recursively
   }
 
   function clearBackground(ctx: CanvasRenderingContext2D): void {
-    ctx.clearRect(0, 0, dimensions.width, dimensions.height);
+    ctx.clearRect(0, 0, size.width, size.height);
   }
-
-  /* const resizeCanvas = useCallback((e: ResizeObserver) => {
-
-  }) */
-
-  useEffect(() => {
-    if (!canvasRef.current) {
-      return;
-    }
-    const ctx = canvasRef.current!.getContext("2d");
-    /*let canvasWidth = canvasRef.current!.width;
-    let canvasHeight = canvasRef.current!.height;
-
-    const canvas: HTMLCanvasElement = canvasRef.current;
-
-    //canvas.addEventListener("resize", handleResize);
-     function handleResize() {
-        //console.log({ canvasWidth, canvasHeight });
-        //ctx!.clearRect(0, 0, size.width, size.height);
-        clearBackground(ctx!);
-      } */
-    function handleResize() {
-      //const ctx = canvasRef.current!.getContext("2d");
-      clearBackground(ctx!);
-      //renderFrame();
-      //console.log(ctx);
-      setDimensions({
-        width: dimensions.width,
-        height: dimensions.height,
-      });
-    }
-    canvasRef.current!.addEventListener("resize", handleResize);
-
-    //handleResize();
-
-    return () =>
-      //canvasRef.current!.removeEventListener("resize", handleResize);
-      canvasRef.current!.removeEventListener("resize", handleResize);
-  }, []);
 
   function drawMovingRects(
     ctx: CanvasRenderingContext2D,
@@ -145,8 +101,8 @@ export default function AnimatedCanvas({
     }
 
     //variables for the dimensions of the canvas context
-    const fullCanvasWidth = dimensions.width;
-    const fullCanvasHeight = dimensions.height;
+    const fullCanvasWidth = size.width;
+    const fullCanvasHeight = size.height;
     //console.log({ fullCanvasWidth, fullCanvasHeight });
 
     //half dimensions for the canvas to be used in context of offsets for animation and positions of graphics
@@ -428,8 +384,8 @@ export default function AnimatedCanvas({
   return (
     <StyledCanvas
       ref={canvasRef}
-      width={dimensions.width}
-      height={dimensions.height}
+      width={size.width}
+      height={size.height}
     ></StyledCanvas>
   );
 }
