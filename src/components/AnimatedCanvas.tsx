@@ -166,10 +166,10 @@ export default function AnimatedCanvas({
 
     let xOffset2 =
       fullCanvasWidth *
-      Math.sin((randomRectRef.current * shapeWidthHalved) / 16); //3 green
+      Math.sin((randomRectRef.current * shapeWidthHalved) / 32); //3 green
     let yOffset2 =
       fullCanvasHeight *
-      Math.tanh((randomRectRef.current * fullShapeHeight) / 256); //4 orange
+      Math.tanh((randomRectRef.current * fullShapeHeight) / 512); //4 orange
     /* let xOffset2 =
       fullCanvasWidth *
       Math.cos((randomRectRef.current * shapeWidthHalved) / 32); //3 green
@@ -362,13 +362,11 @@ export default function AnimatedCanvas({
     ctx.restore();
     ctx.save();
     let splitTxt3 = logoText.split("\n");
-    txtX = xOffset2;
-    txtY = canvasHeightHalved;
 
     let logo3 = vertices(rect([shapeWidthHalved, shapeHeightHalved]), 4);
 
-    let logo3XValueTracker = Math.floor(Math.abs((xOffset2 / 360) * 100));
-    let logo3YValueTracker = Math.floor(Math.abs((yOffset2 / 360) * 100));
+    let logo3XValueTracker = Math.floor(Math.abs((xOffset2 / 360) * 100) * 4);
+    let logo3YValueTracker = Math.floor(Math.abs((yOffset2 / 360) * 100) * 4);
 
     let logo3VariableColour = `hsl(120, 
         ${logo3XValueTracker}%, ${getRandomNumber(0, 50)}%)`;
@@ -382,8 +380,8 @@ export default function AnimatedCanvas({
 
     //ctx.shadowBlur = logo3XValueTracker / 2;
 
-    shearX = 0.125;
-    //shearY = 0;
+    shearX = 0.00125;
+    shearY = -0.125;
 
     draw(
       ctx,
@@ -393,16 +391,24 @@ export default function AnimatedCanvas({
           {
             //rotate: logo3XValueTracker * 0.05,
             //translate: [canvasWidthHalved, canvasHeightHalved],
-            transform: [1, shearY, shearX, 1, xOffset2, yOffset2],
+            transform: [
+              1,
+              shearY,
+              shearX,
+              1,
+              logo3XValueTracker,
+              logo3YValueTracker + shapeHeightHalved / 2,
+            ],
             /*  translate: [
                 xOffset2,
                 ((canvasHeightHalved / 20) * 2) ^ +shapeHeightHalved,
               ],  */
             //stroke: "darkgreen",
             stroke: logo3ShadowColor,
+            //stroke: "black",
           },
           {
-            jitter: 3,
+            jitter: 2.5,
             curveScale: 0.05,
             fill: defHatchPen(logo3VariableColour, "d", 1, 8.5),
           }
@@ -410,16 +416,21 @@ export default function AnimatedCanvas({
       )
     );
 
-    /* 
+    //txtX = logo3XValueTracker;
+    //txtY = logo3YValueTracker;
+    txtX = xOffset2;
+    txtY = yOffset2;
+
     for (let i = 0; i < splitTxt3.length; i++) {
       ctx.fillText(
         splitTxt3[i],
-        txtX - shapeWidth / getRandomNumber(4, 4.5),
-        (txtY + shapeHeight) / 2.75 +
-          i * (strokeWidth + (1.25 * canvasHeightHalved) / 8)
+        txtX - shapeWidth / 2,
+        //+ xOffset2,
+        //- shapeWidth / getRandomNumber(4, 4.5),
+        txtY + shapeHeightHalved + i * (strokeWidth + 1.25 + shapeHeight / 8)
       );
     }
- */
+
     /* ctx.strokeStyle = "darkgreen";
     ctx.strokeRect(
       xOffset2,
