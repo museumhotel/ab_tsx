@@ -96,8 +96,8 @@ export default function AnimatedCanvas({
     }
     randomRectRef.current += deltaTime * 0.0025;
 
-    if (randomRectRef.current > 2 * Math.PI) {
-      randomRectRef.current -= 2 * Math.PI;
+    if (randomRectRef.current > (2 * Math.PI) / 2) {
+      randomRectRef.current -= (2 * Math.PI) / 2;
     }
 
     //variables for the dimensions of the canvas context
@@ -130,13 +130,20 @@ export default function AnimatedCanvas({
       //size.width = size.width * 1.5;
       //animationFrameRequestRef.current = requestAnimationFrame(renderFrame);
       //renderFrame();
-      fullShapeWidth = canvasWidthHalved * 1.25;
-      fullShapeHeight = canvasHeightHalved * 1.25;
+      //fullShapeWidth = canvasWidthHalved * 1.0125;
+      //fullShapeWidth = canvasWidthHalved * 1.0125;
+      fullShapeHeight = canvasHeightHalved / 1.5;
+      fullShapeHeight = canvasHeightHalved / 1.5;
     }
 
     if (fullCanvasWidth >= 241 && fullCanvasWidth <= 318.75) {
-      //fullShapeWidth = canvasWidthHalved * 1.5;
-      //fullShapeHeight = canvasHeightHalved * 1.5;
+      fullShapeWidth = canvasWidthHalved / 1.25;
+      fullShapeHeight = canvasHeightHalved / 1.25;
+    }
+
+    if (fullCanvasWidth >= 318.76 && fullCanvasWidth <= 720) {
+      fullShapeWidth = canvasWidthHalved / 1.25;
+      fullShapeHeight = canvasHeightHalved / 1.25;
     }
 
     //variables for half dimensions of the shapes/ quarter dimenions of the canvas
@@ -154,7 +161,7 @@ export default function AnimatedCanvas({
     );
 
     //offset positions for the animations
-    let xOffset = canvasWidthHalved * Math.sin(randomRectRef.current); //1 red
+    let xOffset = canvasWidthHalved / Math.tan(randomRectRef.current); //1 red
     let yOffset = canvasHeightHalved * Math.sin(randomRectRef.current); //2 blue
 
     let xOffset2 = fullCanvasWidth * Math.cos(randomRectRef.current / 2); //3 green
@@ -173,6 +180,9 @@ export default function AnimatedCanvas({
 
     //console.log(splitTxt1);
     //};
+
+    let shearX = 0;
+    let shearY = 0;
 
     //animateText();
     //ctx.beginPath();
@@ -203,24 +213,49 @@ export default function AnimatedCanvas({
       logo1Shadow = "pink";
     } */
 
+    //shearX = -0.05;
+    shearX = 0.0075;
+    //shearY = 0.0075;
+
     draw(
       ctx,
       center(
         fuzzyPoly(
           logo1,
           {
-            translate: [xOffset, canvasHeightHalved + shapeHeightHalved / 2],
+            //translate: [xOffset, canvasHeightHalved + shapeHeightHalved / 2],
+            //translate: [canvasWidthHalved, canvasHeightHalved / 2],
+            //rotate: fullCanvasHeight / 2,
+            transform: [
+              1,
+              shearY,
+              shearX,
+              1,
+              xOffset + canvasWidthHalved / 2.5,
+              canvasHeightHalved / 2,
+            ],
             //stroke: "darkred",
             stroke: logo1VariableColour,
           },
           {
-            jitter: 10,
+            jitter: 2.5,
             curveScale: 0.0125,
             fill: defHatchPen("#e1e1e1", "v", 1, 6.25),
           }
         )
       )
     );
+
+    txtX = shapeWidthHalved;
+    for (let i = 0; i < splitTxt1.length; i++) {
+      ctx.fillText(
+        splitTxt1[i],
+        xOffset + shapeWidthHalved / 2.5,
+        txtY +
+          shapeHeight / -1.25 +
+          i * (strokeWidth + (1.25 * canvasHeightHalved) / 6.75)
+      );
+    }
 
     /* ctx.strokeRect(
       xOffset,
@@ -230,7 +265,7 @@ export default function AnimatedCanvas({
       shapeHeight
       //shapeHeightHalved
     ); */
-    for (let i = 0; i < splitTxt1.length; i++) {
+    /* for (let i = 0; i < splitTxt1.length; i++) {
       ctx.fillText(
         splitTxt1[i],
         txtX - shapeWidthHalved / 4.5,
@@ -238,7 +273,7 @@ export default function AnimatedCanvas({
           shapeHeight / 2 +
           i * (strokeWidth + (1.25 * canvasHeightHalved) / 4.75)
       );
-    }
+    } */
 
     ctx.restore();
     ctx.save();
@@ -261,6 +296,7 @@ export default function AnimatedCanvas({
 
     //ctx.shadowBlur = logo2YValueTracker;
 
+    /*
     draw(
       ctx,
       center(
@@ -276,10 +312,6 @@ export default function AnimatedCanvas({
             curveScale: 0.0125,
             fill: defHatchPen(logo2VariableColour, "h", 1, 5),
 
-            /* compFill(
-              defHatchPen(logo2VariableColour, "v", 1, 12.5),
-              defHatchPen("#e1e1e1", "h", 1, 6.25)
-            ), */
           }
         )
       )
@@ -294,6 +326,7 @@ export default function AnimatedCanvas({
           i * (strokeWidth + (1.25 * canvasHeightHalved) / 4.75)
       );
     }
+     */
 
     /* ctx.strokeStyle = "darkblue";
     ctx.strokeRect(
@@ -324,9 +357,10 @@ export default function AnimatedCanvas({
 
     //ctx.shadowBlur = logo3XValueTracker / 2;
 
-    let sx = -0.5;
-    let sy = 0;
+    //let shearX= -0.5;
+    //let shearY = 0;
 
+    /*
     draw(
       ctx,
       center(
@@ -337,16 +371,16 @@ export default function AnimatedCanvas({
             //translate: [canvasWidthHalved, canvasHeightHalved],
             transform: [
               1,
-              sy,
-              sx,
+              shearY,
+              shearX,
               1,
               xOffset2,
               ((canvasHeightHalved / 20) * 2) ^ +shapeHeightHalved,
             ],
-            /* translate: [
+             translate: [
                 xOffset2,
                 ((canvasHeightHalved / 20) * 2) ^ +shapeHeightHalved,
-              ], */
+              ], 
             //stroke: "darkgreen",
             stroke: logo3ShadowColor,
           },
@@ -367,6 +401,7 @@ export default function AnimatedCanvas({
           i * (strokeWidth + (1.25 * canvasHeightHalved) / 8)
       );
     }
+    */
 
     /* ctx.strokeStyle = "darkgreen";
     ctx.strokeRect(
