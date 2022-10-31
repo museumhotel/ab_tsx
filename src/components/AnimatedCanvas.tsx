@@ -94,7 +94,7 @@ export default function AnimatedCanvas({
     if (!canvasRef.current) {
       return;
     }
-    randomRectRef.current += deltaTime * 0.0025;
+    randomRectRef.current += deltaTime * 0.0005;
 
     if (randomRectRef.current > (2 * Math.PI) / 2) {
       randomRectRef.current -= (2 * Math.PI) / 2;
@@ -162,10 +162,22 @@ export default function AnimatedCanvas({
 
     //offset positions for the animations
     let xOffset = canvasWidthHalved / Math.tan(randomRectRef.current); //1 red
-    let yOffset = canvasHeightHalved * Math.sin(randomRectRef.current); //2 blue
+    let yOffset = canvasHeightHalved / Math.sin(randomRectRef.current); //2 blue
 
-    let xOffset2 = fullCanvasWidth * Math.cos(randomRectRef.current / 2); //3 green
-    let yOffset2 = fullCanvasHeight * Math.cos(randomRectRef.current / 2); //4 orange
+    let xOffset2 =
+      fullCanvasWidth *
+      Math.sin((randomRectRef.current * shapeWidthHalved) / 16); //3 green
+    let yOffset2 =
+      fullCanvasHeight *
+      Math.tanh((randomRectRef.current * fullShapeHeight) / 256); //4 orange
+    /* let xOffset2 =
+      fullCanvasWidth *
+      Math.cos((randomRectRef.current * shapeWidthHalved) / 32); //3 green
+    let yOffset2 =
+      fullCanvasHeight *
+      Math.cos((randomRectRef.current * shapeHeightHalved) / 32); //4 orange */
+    /*let xOffset2 = canvasWidthHalved * Math.cos(randomRectRef.current % 4); //3 green
+    let yOffset2 = canvasHeightHalved * Math.cos(randomRectRef.current % 4); //4 orange*/
 
     let logoText = "ART \nBOYZ.";
     let textSize = 12.5;
@@ -278,55 +290,66 @@ export default function AnimatedCanvas({
     ctx.restore();
     ctx.save();
     let splitTxt2 = logoText.split("\n");
-    txtX = canvasWidthHalved;
-    txtY = yOffset;
 
     let logo2 = vertices(rect([shapeWidthHalved, shapeHeightHalved]), 4);
 
-    let logo2YValueTracker = Math.floor(Math.abs((yOffset / 360) * 100));
+    let logo2YValueTracker = Math.floor(Math.abs((yOffset / 180) * 50));
 
-    let logo2VariableColour = `hsl(240, 
-        ${getRandomNumber(0, 25)}%, ${logo2YValueTracker}%)`;
+    /* let logo2VariableColour = `hsl(240, 
+        ${getRandomNumber(0, 12.5)}%, ${logo2YValueTracker / 2}%)`;
 
     let logo2ShadowColor = `hsl(0, ${getRandomNumber(0, 10)}%, ${
       logo2YValueTracker * 2
+    }%)`; */
+    let logo2VariableColour = `hsl(240, 
+        ${getRandomNumber(0, 5)}%, ${logo2YValueTracker}%)`;
+
+    let logo2ShadowColor = `hsl(0, ${getRandomNumber(0, 10)}%, ${
+      logo2YValueTracker / 1.5
     }%)`;
 
     //ctx.shadowColor = logo2ShadowColor;
 
     //ctx.shadowBlur = logo2YValueTracker;
 
-    /*
+    shearY = -0.0075;
     draw(
       ctx,
       center(
         fuzzyPoly(
           logo2,
           {
-            translate: [canvasWidthHalved + shapeWidthHalved / 2, yOffset],
+            //translate: [canvasWidthHalved + shapeWidthHalved / 2, yOffset],
+            transform: [
+              1,
+              shearY,
+              shearX,
+              1,
+              canvasWidthHalved,
+              (yOffset + shapeHeight) / 1.5,
+            ],
             //stroke: "darkblue",
             stroke: logo2ShadowColor,
           },
           {
-            jitter: 10,
+            //jitter: 2.5,
             curveScale: 0.0125,
             fill: defHatchPen(logo2VariableColour, "h", 1, 5),
-
           }
         )
       )
     );
-
+    txtX = canvasWidthHalved / 1.75;
+    txtY = yOffset;
     for (let i = 0; i < splitTxt2.length; i++) {
       ctx.fillText(
         splitTxt2[i],
         txtX + shapeWidthHalved / getRandomNumber(2.75, 4),
         txtY +
           shapeHeight / 4.75 +
-          i * (strokeWidth + (1.25 * canvasHeightHalved) / 4.75)
+          i * (strokeWidth + (1.25 * canvasHeightHalved) / 8.75)
       );
     }
-     */
 
     /* ctx.strokeStyle = "darkblue";
     ctx.strokeRect(
@@ -335,6 +358,7 @@ export default function AnimatedCanvas({
       shapeWidthHalved,
       shapeHeightHalved
     ); */
+
     ctx.restore();
     ctx.save();
     let splitTxt3 = logoText.split("\n");
@@ -344,6 +368,7 @@ export default function AnimatedCanvas({
     let logo3 = vertices(rect([shapeWidthHalved, shapeHeightHalved]), 4);
 
     let logo3XValueTracker = Math.floor(Math.abs((xOffset2 / 360) * 100));
+    let logo3YValueTracker = Math.floor(Math.abs((yOffset2 / 360) * 100));
 
     let logo3VariableColour = `hsl(120, 
         ${logo3XValueTracker}%, ${getRandomNumber(0, 50)}%)`;
@@ -357,10 +382,9 @@ export default function AnimatedCanvas({
 
     //ctx.shadowBlur = logo3XValueTracker / 2;
 
-    //let shearX= -0.5;
-    //let shearY = 0;
+    shearX = 0.125;
+    //shearY = 0;
 
-    /*
     draw(
       ctx,
       center(
@@ -369,18 +393,11 @@ export default function AnimatedCanvas({
           {
             //rotate: logo3XValueTracker * 0.05,
             //translate: [canvasWidthHalved, canvasHeightHalved],
-            transform: [
-              1,
-              shearY,
-              shearX,
-              1,
-              xOffset2,
-              ((canvasHeightHalved / 20) * 2) ^ +shapeHeightHalved,
-            ],
-             translate: [
+            transform: [1, shearY, shearX, 1, xOffset2, yOffset2],
+            /*  translate: [
                 xOffset2,
                 ((canvasHeightHalved / 20) * 2) ^ +shapeHeightHalved,
-              ], 
+              ],  */
             //stroke: "darkgreen",
             stroke: logo3ShadowColor,
           },
@@ -393,6 +410,7 @@ export default function AnimatedCanvas({
       )
     );
 
+    /* 
     for (let i = 0; i < splitTxt3.length; i++) {
       ctx.fillText(
         splitTxt3[i],
@@ -401,8 +419,7 @@ export default function AnimatedCanvas({
           i * (strokeWidth + (1.25 * canvasHeightHalved) / 8)
       );
     }
-    */
-
+ */
     /* ctx.strokeStyle = "darkgreen";
     ctx.strokeRect(
       xOffset2,
@@ -413,13 +430,13 @@ export default function AnimatedCanvas({
     ctx.restore();
     ctx.save();
     ctx.restore();
-    ctx.strokeStyle = "darkorange";
+    /* ctx.strokeStyle = "darkorange";
     ctx.strokeRect(
       fullCanvasWidth / 8,
       yOffset2,
       shapeWidthHalved,
       shapeHeightHalved
-    );
+    ); */
     ctx.lineWidth = strokeWidth;
 
     //let splitTxt1 = rectText.frame1.split("\n")
