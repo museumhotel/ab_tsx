@@ -47,6 +47,8 @@ export default function AnimatedCanvas({
 
   const isOnScreen = useOnScreen(canvasRef!);
 
+  //const [deltaTimeCount, setDeltaTimeCount] = useState<number>(0);
+
   if (isOnScreen) {
     //console.log({ isOnScreen });
   }
@@ -96,11 +98,16 @@ export default function AnimatedCanvas({
     }
     randomRectRef.current += deltaTime * 0.0005;
 
+    var colourDeterminant: number = Math.floor(getRandomNumber(0, 5));
+
     if (randomRectRef.current > (2 * Math.PI) / 2) {
       randomRectRef.current -= (2 * Math.PI) / 2;
+      //colourDeterminant = Math.floor(getRandomNumber(0, 5));
+      console.log(colourDeterminant);
     }
     //console.log(Math.floor((randomRectRef.current * 360) / 100));
     let deltaTimeRef = Math.floor((randomRectRef.current * 360) / 100);
+    let deltaTimeRaw = randomRectRef.current;
 
     //variables for the dimensions of the canvas context
     const fullCanvasWidth = size.width;
@@ -367,7 +374,7 @@ export default function AnimatedCanvas({
 
     let logo3 = vertices(rect([shapeWidthHalved, shapeHeightHalved]), 4);
 
-    let logo3XValueTracker = Math.floor(Math.abs((xOffset2 / 360) * 100) * 4);
+    var logo3XValueTracker = Math.floor(Math.abs((xOffset2 / 360) * 100) * 4);
     let logo3YValueTracker = Math.floor(Math.abs((yOffset2 / 360) * 100) * 4);
 
     let logo3VariableColour = `hsl(${logo3YValueTracker}, 
@@ -384,48 +391,56 @@ export default function AnimatedCanvas({
 
     let colourFamily: number = 0;
     let colourFamilyHSL: string;
-    let colourDeterminant: number = Math.floor(getRandomNumber(0, 5));
+    //console.log(deltaTimeRaw);
+
+    if (Math.floor(deltaTimeRaw) > (2 * Math.PI) / 2) {
+      //randomRectRef.current -= (2 * Math.PI) / 2;
+      //console.log(colourDeterminant);
+    }
+
     /* 
     switch (colourDeterminant) {
       case 0:
         colourFamilyHSL = `hsl(252, 
-            ${logo3XValueTracker}%, ${getRandomNumber(0, 50)}%)`; //purples
+              ${logo3XValueTracker}%, ${getRandomNumber(0, 50)}%)`; //purples
         break;
       case 1:
         colourFamilyHSL = `hsl(180, 
-            ${logo3XValueTracker}%, ${getRandomNumber(0, 50)}%)`; //cyans
+              ${logo3XValueTracker}%, ${getRandomNumber(0, 50)}%)`; //cyans
         break;
       case 2:
         colourFamilyHSL = `hsl(${getRandomNumber(30, 35)}, 
-            ${logo3XValueTracker}%, ${getRandomNumber(0, 50)}%)`; //oranges
+              ${logo3XValueTracker}%, ${getRandomNumber(0, 50)}%)`; //oranges
         break;
       case 3:
         colourFamilyHSL = `hsl(90, 
-            ${logo3XValueTracker}%, ${getRandomNumber(0, 50)}%)`; //greens
+              ${logo3XValueTracker}%, ${getRandomNumber(0, 50)}%)`; //greens
         break;
       default:
         colourFamilyHSL = `hsl(${getRandomNumber(30, 35)}, 
-      ${logo3XValueTracker}%, ${getRandomNumber(50, 75)}%)`; //oranges
+        ${logo3XValueTracker}%, ${getRandomNumber(50, 75)}%)`; //oranges
     }
-     */
-    //console.log(colourDeterminant);
-    /* 
+
     switch (deltaTimeRef) {
       case 0:
-        //logo3ShadowColor = colourFamilyHSL;
+        logo3ShadowColor = colourFamilyHSL;
         break;
       case 3:
-        //logo3ShadowColor = colourFamilyHSL;
+        logo3ShadowColor = colourFamilyHSL;
         break;
       case 6:
-        //logo3ShadowColor = colourFamilyHSL;
+        logo3ShadowColor = colourFamilyHSL;
         break;
       case 9:
-        //logo3ShadowColor = colourFamilyHSL;
+        logo3ShadowColor = colourFamilyHSL;
         break;
       //default:
       //logo3ShadowColor = `#d5d5d5`;
     } */
+
+    //let colourDeterminant: number = Math.floor(getRandomNumber(0, 5));
+
+    //console.log(colourDeterminant);
 
     if (deltaTimeRef == 0) {
       switch (colourDeterminant) {
@@ -437,6 +452,11 @@ export default function AnimatedCanvas({
           logo3ShadowColor = `hsl(180, 
                     ${logo3XValueTracker}%, ${getRandomNumber(0, 50)}%)`; //cyans
           break;
+      }
+      //logo3ShadowColor = `#303030`;
+    }
+    if (deltaTimeRef == 3) {
+      switch (colourDeterminant) {
         case 2:
           logo3ShadowColor = `hsl(${getRandomNumber(30, 35)}, 
                     ${logo3XValueTracker}%, ${getRandomNumber(0, 50)}%)`; //oranges
@@ -445,12 +465,7 @@ export default function AnimatedCanvas({
           logo3ShadowColor = `hsl(90, 
                     ${logo3XValueTracker}%, ${getRandomNumber(50, 75)}%)`; //greens
           break;
-      }
-      //logo3ShadowColor = `#303030`;
-    }
-    if (deltaTimeRef == 3) {
-      switch (colourDeterminant) {
-        case 0:
+        /* case 0:
           logo3ShadowColor = `#b7ff00`;
           break;
         case 1:
@@ -460,7 +475,7 @@ export default function AnimatedCanvas({
           logo3ShadowColor = `#c48eb3`;
         case 3:
           logo3ShadowColor = `#0041a3`;
-          break;
+          break; */
       }
       //logo3ShadowColor = `#b7ff00`;
     }
