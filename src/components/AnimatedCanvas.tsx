@@ -96,15 +96,13 @@ export default function AnimatedCanvas({
     if (!canvasRef.current) {
       return;
     }
-    randomRectRef.current += deltaTime * 0.0005;
-
-    var colourDeterminant: number = Math.floor(getRandomNumber(0, 5));
+    randomRectRef.current += deltaTime * 0.00025;
 
     if (randomRectRef.current > (2 * Math.PI) / 2) {
       randomRectRef.current -= (2 * Math.PI) / 2;
-      //colourDeterminant = Math.floor(getRandomNumber(0, 5));
-      console.log(colourDeterminant);
     }
+    //console.log(randomRectRef);
+
     //console.log(Math.floor((randomRectRef.current * 360) / 100));
     let deltaTimeRef = Math.floor((randomRectRef.current * 360) / 100);
     let deltaTimeRaw = randomRectRef.current;
@@ -374,7 +372,7 @@ export default function AnimatedCanvas({
 
     let logo3 = vertices(rect([shapeWidthHalved, shapeHeightHalved]), 4);
 
-    var logo3XValueTracker = Math.floor(Math.abs((xOffset2 / 360) * 100) * 4);
+    let logo3XValueTracker = Math.floor(Math.abs((xOffset2 / 360) * 100) * 4);
     let logo3YValueTracker = Math.floor(Math.abs((yOffset2 / 360) * 100) * 4);
 
     let logo3VariableColour = `hsl(${logo3YValueTracker}, 
@@ -385,18 +383,11 @@ export default function AnimatedCanvas({
       2.5
     )}%, ${logo3XValueTracker}%)`;
 
-    function randomColourPicker() {
-      let hueRange = 0;
-    }
-
     let colourFamily: number = 0;
     let colourFamilyHSL: string;
-    //console.log(deltaTimeRaw);
+    let colourDeterminant: number = Math.floor(getRandomNumber(0, 5));
 
-    if (Math.floor(deltaTimeRaw) > (2 * Math.PI) / 2) {
-      //randomRectRef.current -= (2 * Math.PI) / 2;
-      //console.log(colourDeterminant);
-    }
+    //console.log(deltaTimeRaw);
 
     /* 
     switch (colourDeterminant) {
@@ -443,60 +434,41 @@ export default function AnimatedCanvas({
     //console.log(colourDeterminant);
 
     if (deltaTimeRef == 0) {
-      switch (colourDeterminant) {
-        case 0:
-          logo3ShadowColor = `hsl(252, 
-                ${logo3XValueTracker}%, ${getRandomNumber(0, 50)}%)`; //purples
-          break;
-        case 1:
-          logo3ShadowColor = `hsl(180, 
-                    ${logo3XValueTracker}%, ${getRandomNumber(0, 50)}%)`; //cyans
-          break;
-      }
       //logo3ShadowColor = `#303030`;
+
+      logo3ShadowColor = `hsl( ${getRandomNumber(345, 360)}, 
+                ${logo3XValueTracker}%, ${getRandomNumber(0, 100)}%)`; //360reds
+      ctx.shadowColor = logo3ShadowColor;
+      ctx.shadowBlur = logo3XValueTracker;
     }
     if (deltaTimeRef == 3) {
-      switch (colourDeterminant) {
-        case 2:
-          logo3ShadowColor = `hsl(${getRandomNumber(30, 35)}, 
-                    ${logo3XValueTracker}%, ${getRandomNumber(0, 50)}%)`; //oranges
-          break;
-        case 3:
-          logo3ShadowColor = `hsl(90, 
-                    ${logo3XValueTracker}%, ${getRandomNumber(50, 75)}%)`; //greens
-          break;
-        /* case 0:
-          logo3ShadowColor = `#b7ff00`;
-          break;
-        case 1:
-          logo3ShadowColor = `#303030`;
-          break;
-        case 2:
-          logo3ShadowColor = `#c48eb3`;
-        case 3:
-          logo3ShadowColor = `#0041a3`;
-          break; */
-      }
       //logo3ShadowColor = `#b7ff00`;
+
+      logo3ShadowColor = `hsl(${getRandomNumber(90, 100)}, 
+                    ${logo3XValueTracker}%, ${getRandomNumber(0, 100)}%)`; //greens
+      ctx.shadowColor = logo3ShadowColor;
+      ctx.shadowBlur = logo3XValueTracker;
     }
     if (deltaTimeRef == 6) {
-      logo3ShadowColor = `#d30f0f`;
+      //logo3ShadowColor = `#d30f0f`;
+      logo3ShadowColor = `hsl(${getRandomNumber(225, 240)}, 
+                    ${logo3XValueTracker}%, ${getRandomNumber(0, 100)}%)`; //blues
+      ctx.shadowColor = logo3ShadowColor;
+      ctx.shadowBlur = logo3XValueTracker;
     }
     if (deltaTimeRef == 9) {
-      logo3ShadowColor = `#2b00ff`;
+      //logo3ShadowColor = `#2b00ff`;
+      logo3ShadowColor = `hsl(${getRandomNumber(0, 360)}, 
+                    ${logo3XValueTracker}%, ${getRandomNumber(0, 100)}%)`; //rainbow
+      ctx.shadowColor = logo3ShadowColor;
+      ctx.shadowBlur = logo3XValueTracker;
     }
 
-    if (logo3XValueTracker >= 0 && logo3XValueTracker <= 32) {
-      //logo3ShadowColor = `#b7ff00`;
-      //let hueRange = 0
-      //let hue
-      //logo3ShadowColor = `hsl()`;
-    }
     //console.log(logo3XValueTracker);
 
     //ctx.shadowColor = logo3ShadowColor;
 
-    //ctx.shadowBlur = logo3XValueTracker / 2;
+    //ctx.shadowBlur = logo3XValueTracker;
 
     shearX = 0.00125;
     shearY = -0.125;
@@ -507,7 +479,7 @@ export default function AnimatedCanvas({
         fuzzyPoly(
           logo3,
           {
-            rotate: logo3XValueTracker * 0.05,
+            rotate: logo3XValueTracker * 2,
             //translate: [canvasWidthHalved, canvasHeightHalved],
             transform: [
               1,
