@@ -17,6 +17,7 @@ const StyledCanvas = styled.canvas`
     28 / 28px / 0 stretch;
   border-width: 12px;
   border-style: solid;
+  border-image-repeat: stretch repeat;
 `;
 
 interface Point2D {
@@ -205,14 +206,18 @@ export default function AnimatedCanvas({
     let shapeHeightHalved = fullShapeHeight / 2;
 
     //variables to hold shape dimensions randomised
-    let shapeWidth = getRandomNumber(
+    /* let shapeWidth = getRandomNumber(
       shapeWidthHalved / 2,
       shapeWidthHalved / 1.5
     );
     let shapeHeight = getRandomNumber(
       shapeHeightHalved * 1.5,
       shapeHeightHalved * 1.75
-    );
+    ); */
+
+    //variables to hold shape dimensions randomised
+    let shapeWidth = getRandomNumber(250 / 2, 250 / 1.5);
+    let shapeHeight = getRandomNumber(250 / 2, 250 / 1.5);
 
     //offset positions for the animations
     let xOffset = canvasWidthHalved / Math.tan(randomRectRef.current); //1 red
@@ -286,7 +291,7 @@ export default function AnimatedCanvas({
     //shearX = -0.05;
     shearX = 0.0075;
     //shearY = 0.0075;
-
+    /* 
     draw(
       ctx,
       center(
@@ -325,7 +330,7 @@ export default function AnimatedCanvas({
           shapeHeight / -1.25 +
           i * (strokeWidth + (1.25 * canvasHeightHalved) / 6.75)
       );
-    }
+    } */
 
     /* ctx.strokeRect(
       xOffset,
@@ -346,19 +351,19 @@ export default function AnimatedCanvas({
     } */
 
     ctx.restore();
-    ctx.save();
+    /*ctx.save();
     let splitTxt2 = logoText.split("\n");
 
     let logo2 = vertices(rect([shapeWidthHalved, shapeHeightHalved]), 4);
 
     let logo2YValueTracker = Math.floor(Math.abs((yOffset / 360) * 100));
 
-    /* let logo2VariableColour = `hsl(240, 
+     let logo2VariableColour = `hsl(240, 
         ${getRandomNumber(0, 12.5)}%, ${logo2YValueTracker / 2}%)`;
 
     let logo2ShadowColor = `hsl(0, ${getRandomNumber(0, 10)}%, ${
       logo2YValueTracker * 2
-    }%)`; */
+    }%)`; 
     //console.log(logo2YValueTracker);
     let logo2VariableColour = `hsl(${logo2YValueTracker / 100}%, 
       100%, ${logo2YValueTracker}%)`;
@@ -409,7 +414,7 @@ export default function AnimatedCanvas({
           shapeHeight / 4.75 +
           i * (strokeWidth + (1.25 * canvasHeightHalved) / 8.75)
       );
-    }
+    }*/
 
     /* ctx.strokeStyle = "darkblue";
     ctx.strokeRect(
@@ -423,7 +428,7 @@ export default function AnimatedCanvas({
     ctx.save();
     let splitTxt3 = logoText.split("\n");
 
-    let logo3 = vertices(rect([shapeWidthHalved, shapeHeightHalved]), 4);
+    let logo3 = vertices(rect([shapeWidth, shapeHeight]), 4);
 
     let logo3XValueTracker = Math.floor(Math.abs((xOffset2 / 360) * 100) * 4);
     let logo3YValueTracker = Math.floor(Math.abs((yOffset2 / 360) * 100) * 4);
@@ -524,7 +529,7 @@ export default function AnimatedCanvas({
     //ctx.shadowBlur = logo3XValueTracker;
 
     shearX = 0.00125;
-    shearY = -0.125;
+    shearY = -0.0125;
 
     draw(
       ctx,
@@ -532,15 +537,17 @@ export default function AnimatedCanvas({
         fuzzyPoly(
           logo3,
           {
-            rotate: logo3XValueTracker * 2,
+            //rotate: logo3XValueTracker * 2,
             //translate: [canvasWidthHalved, canvasHeightHalved],
             transform: [
               1,
               shearY,
               shearX,
               1,
-              logo3XValueTracker,
-              logo3YValueTracker,
+              /* logo3XValueTracker,
+              logo3YValueTracker, */
+              fullCanvasWidth / 2,
+              fullCanvasHeight / 2,
               //+ shapeHeightHalved / 2,
             ],
             /*  translate: [
