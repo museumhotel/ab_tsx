@@ -220,8 +220,18 @@ export default function AnimatedCanvas({
     let shapeHeight = getRandomNumber(250 / 2, 250 / 1.5);
 
     //offset positions for the animations
-    let xOffset = canvasWidthHalved / Math.tan(randomRectRef.current); //1 red
-    let yOffset = canvasHeightHalved / Math.sin(randomRectRef.current); //2 blue
+    /* let xOffset = canvasWidthHalved / Math.tan(randomRectRef.current); //1 red
+    let yOffset = canvasHeightHalved / Math.sin(randomRectRef.current); //2 blue 
+    */
+    let xOffset = Math.floor(
+      fullCanvasWidth * Math.tan(randomRectRef.current * 2)
+    ); //1 red
+    let yOffset = fullCanvasHeight * Math.tan(randomRectRef.current); //2 blue
+
+    //shape restarts movement from left at 0 but sometimes 0 is skipped and 1 logged instead implement something for each new movement
+    if (xOffset === 0 || xOffset === 1 || xOffset === 2) {
+      //console.log(xOffset);
+    }
 
     let xOffset2 =
       fullCanvasWidth *
@@ -546,8 +556,10 @@ export default function AnimatedCanvas({
               1,
               /* logo3XValueTracker,
               logo3YValueTracker, */
-              fullCanvasWidth / 2,
-              fullCanvasHeight / 2,
+              canvasWidthHalved,
+              //xOffset,
+              canvasHeightHalved,
+              //yOffset,
               //+ shapeHeightHalved / 2,
             ],
             /*  translate: [
@@ -562,7 +574,7 @@ export default function AnimatedCanvas({
             jitter: 2.5,
             curveScale: 0.05,
             fill: compFill(
-              defHatchPen(logo3VariableColour, "d", 1, 8.5),
+              defHatchPen(logo3ShadowColor, "d", 1, 8.5),
               defHatchPen(logo3VariableColour, "d", 2, 4)
             ),
           }
@@ -572,8 +584,9 @@ export default function AnimatedCanvas({
 
     //txtX = logo3XValueTracker;
     //txtY = logo3YValueTracker;
-    txtXL3 = xOffset2;
-    txtYL3 = yOffset2;
+    //txtXL3 = xOffset;
+    txtXL3 = canvasWidthHalved;
+    txtYL3 = canvasHeightHalved;
 
     for (let i = 0; i < splitTxt3.length; i++) {
       ctx.fillText(
@@ -581,7 +594,7 @@ export default function AnimatedCanvas({
         txtXL3 - shapeWidth / 2,
         //+ xOffset2,
         //- shapeWidth / getRandomNumber(4, 4.5),
-        txtYL3 + shapeHeight / 2 + i * (strokeWidth + 1.25 + shapeHeight / 8)
+        txtYL3 + shapeHeight / 2.25 + i * (strokeWidth + 1.25 + shapeHeight / 8)
       );
     }
 
