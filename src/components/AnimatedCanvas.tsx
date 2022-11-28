@@ -1,6 +1,7 @@
 import { center, flip, rect, star, vertices } from "@thi.ng/geom";
 import { compFill, defHatchPen, fuzzyPoly } from "@thi.ng/geom-fuzz";
 import { draw } from "@thi.ng/hiccup-canvas/draw";
+import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import useOnScreen from "../hooks/useOnScreen";
@@ -18,6 +19,7 @@ const StyledCanvas = styled.canvas`
   border-width: 12px;
   border-style: solid;
   border-image-repeat: stretch repeat;
+  //opacity: 0.5;
 `;
 
 interface Point2D {
@@ -45,6 +47,9 @@ export default function AnimatedCanvas({
   height,
   children,
 }: CanvasProps) {
+  const router = useRouter();
+  //console.log(router.pathname);
+
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   let size = useWindowSize();
 
@@ -256,10 +261,7 @@ export default function AnimatedCanvas({
     let shearX = 0;
     let shearY = 0;
 
-    //animateText();
-    //ctx.beginPath();
     ctx.save();
-    let splitTxt1 = logoText.split("\n");
     txtXL1 = xOffset;
     txtYL1 = canvasHeightHalved;
 
@@ -276,166 +278,9 @@ export default function AnimatedCanvas({
       //txtXL1 = fullCanvasWidth / 2;
     }
 
-    let logo1 = vertices(rect([shapeWidthHalved, shapeHeightHalved]), 4);
-
-    //constrain to absolute & positive intergers only
-    let logo1XValueTracker = Math.floor(Math.abs(xOffset / 360) * 100);
-    let logo1VariableColour = `hsl(0, ${getRandomNumber(
-      0,
-      10
-    )}%, ${logo1XValueTracker}%)`;
-    let logo1ShadowColor = `hsl(0, 100%, ${getRandomNumber(10, 30)}%)`;
-    //ctx.shadowColor = logo1ShadowColor;
-    //ctx.shadowColor = "rgba(54, 0, 0, 0.8)";
-    //ctx.shadowBlur = logo1XValueTracker / 4;
-    //console.log(logo1XValueTracker);
-
-    /* if (logo1Tracker > 90.0) {
-      logo1Shadow = "cyan";
-      //logo1Tracker = fullCanvasWidth + 1;
-    }
-    if (logo1Tracker < 60.0) {
-      logo1Shadow = "pink";
-    } */
-
-    //shearX = -0.05;
-    shearX = 0.0075;
-    //shearY = 0.0075;
-    /* 
-    draw(
-      ctx,
-      center(
-        fuzzyPoly(
-          logo1,
-          {
-            //translate: [xOffset, canvasHeightHalved + shapeHeightHalved / 2],
-            //translate: [canvasWidthHalved, canvasHeightHalved / 2],
-            //rotate: fullCanvasHeight / 2,
-            transform: [
-              1,
-              shearY,
-              shearX,
-              1,
-              xOffset + canvasWidthHalved / 2.5,
-              canvasHeightHalved / 2,
-            ],
-            //stroke: "darkred",
-            stroke: logo1VariableColour,
-          },
-          {
-            jitter: 2.5,
-            curveScale: 0.0125,
-            fill: defHatchPen("#e1e1e1", "v", 1, 6.25),
-          }
-        )
-      )
-    );
-
-    txtXL1 = shapeWidthHalved;
-    for (let i = 0; i < splitTxt1.length; i++) {
-      ctx.fillText(
-        splitTxt1[i],
-        xOffset + shapeWidthHalved / 2.5,
-        txtYL1 +
-          shapeHeight / -1.25 +
-          i * (strokeWidth + (1.25 * canvasHeightHalved) / 6.75)
-      );
-    } */
-
-    /* ctx.strokeRect(
-      xOffset,
-      canvasHeightHalved,
-      shapeWidth,
-      //shapeWidthHalved,
-      shapeHeight
-      //shapeHeightHalved
-    ); */
-    /* for (let i = 0; i < splitTxt1.length; i++) {
-      ctx.fillText(
-        splitTxt1[i],
-        txtX - shapeWidthHalved / 4.5,
-        txtY +
-          shapeHeight / 2 +
-          i * (strokeWidth + (1.25 * canvasHeightHalved) / 4.75)
-      );
-    } */
-
-    ctx.restore();
-    /*ctx.save();
-    let splitTxt2 = logoText.split("\n");
-
-    let logo2 = vertices(rect([shapeWidthHalved, shapeHeightHalved]), 4);
-
-    let logo2YValueTracker = Math.floor(Math.abs((yOffset / 360) * 100));
-
-     let logo2VariableColour = `hsl(240, 
-        ${getRandomNumber(0, 12.5)}%, ${logo2YValueTracker / 2}%)`;
-
-    let logo2ShadowColor = `hsl(0, ${getRandomNumber(0, 10)}%, ${
-      logo2YValueTracker * 2
-    }%)`; 
-    //console.log(logo2YValueTracker);
-    let logo2VariableColour = `hsl(${logo2YValueTracker / 100}%, 
-      100%, ${logo2YValueTracker}%)`;
-
-    let logo2ShadowColor = `hsl(0, ${getRandomNumber(0, 10)}%, ${
-      logo2YValueTracker / 1.75
-    }%)`;
-
-    //ctx.shadowColor = logo2ShadowColor;
-
-    //ctx.shadowBlur = logo2YValueTracker;
-
-    shearY = -0.0075;
-    draw(
-      ctx,
-      center(
-        fuzzyPoly(
-          logo2,
-          {
-            //translate: [canvasWidthHalved + shapeWidthHalved / 2, yOffset],
-            transform: [
-              1,
-              shearY,
-              shearX,
-              1,
-              canvasWidthHalved,
-              (yOffset + shapeHeight) / 1.5,
-            ],
-            //stroke: "darkblue",
-            stroke: logo2ShadowColor,
-          },
-          {
-            //jitter: 2.5,
-            curveScale: 0.0125,
-            //fill: defHatchPen(logo1VariableColour, "h", 0.5, 6.25),
-            fill: defHatchPen("#e1e1e1", "h", 0.5, 6.25),
-          }
-        )
-      )
-    );
-    txtXL2 = canvasWidthHalved / 1.75;
-    txtYL2 = yOffset;
-    for (let i = 0; i < splitTxt2.length; i++) {
-      ctx.fillText(
-        splitTxt2[i],
-        txtXL2 + shapeWidthHalved / getRandomNumber(2.75, 4),
-        txtYL2 +
-          shapeHeight / 4.75 +
-          i * (strokeWidth + (1.25 * canvasHeightHalved) / 8.75)
-      );
-    }*/
-
-    /* ctx.strokeStyle = "darkblue";
-    ctx.strokeRect(
-      canvasWidthHalved,
-      yOffset,
-      shapeWidthHalved,
-      shapeHeightHalved
-    ); */
-
     ctx.restore();
     ctx.save();
+    ctx.restore();
     let splitTxt3 = logoText.split("\n");
 
     let logo3 = vertices(rect([shapeWidth, shapeHeight]), 4);
@@ -450,56 +295,6 @@ export default function AnimatedCanvas({
       0,
       2.5
     )}%, ${logo3XValueTracker}%)`;
-
-    let colourFamily: number = 0;
-    let colourFamilyHSL: string;
-    let colourDeterminant: number = Math.floor(getRandomNumber(0, 5));
-
-    //console.log(deltaTimeRaw);
-
-    /* 
-    switch (colourDeterminant) {
-      case 0:
-        colourFamilyHSL = `hsl(252, 
-              ${logo3XValueTracker}%, ${getRandomNumber(0, 50)}%)`; //purples
-        break;
-      case 1:
-        colourFamilyHSL = `hsl(180, 
-              ${logo3XValueTracker}%, ${getRandomNumber(0, 50)}%)`; //cyans
-        break;
-      case 2:
-        colourFamilyHSL = `hsl(${getRandomNumber(30, 35)}, 
-              ${logo3XValueTracker}%, ${getRandomNumber(0, 50)}%)`; //oranges
-        break;
-      case 3:
-        colourFamilyHSL = `hsl(90, 
-              ${logo3XValueTracker}%, ${getRandomNumber(0, 50)}%)`; //greens
-        break;
-      default:
-        colourFamilyHSL = `hsl(${getRandomNumber(30, 35)}, 
-        ${logo3XValueTracker}%, ${getRandomNumber(50, 75)}%)`; //oranges
-    }
-
-    switch (deltaTimeRef) {
-      case 0:
-        logo3ShadowColor = colourFamilyHSL;
-        break;
-      case 3:
-        logo3ShadowColor = colourFamilyHSL;
-        break;
-      case 6:
-        logo3ShadowColor = colourFamilyHSL;
-        break;
-      case 9:
-        logo3ShadowColor = colourFamilyHSL;
-        break;
-      //default:
-      //logo3ShadowColor = `#d5d5d5`;
-    } */
-
-    //let colourDeterminant: number = Math.floor(getRandomNumber(0, 5));
-
-    //console.log(colourDeterminant);
 
     if (deltaTimeRef == 0) {
       //logo3ShadowColor = `#303030`;
@@ -562,17 +357,14 @@ export default function AnimatedCanvas({
               //yOffset,
               //+ shapeHeightHalved / 2,
             ],
-            /*  translate: [
-                xOffset2,
-                ((canvasHeightHalved / 20) * 2) ^ +shapeHeightHalved,
-              ],  */
+
             //stroke: "darkgreen",
             stroke: logo3ShadowColor,
             //stroke: "black",
           },
           {
-            jitter: 2.5,
-            curveScale: 0.05,
+            jitter: 1.25,
+            curveScale: 0.0,
             fill: compFill(
               defHatchPen(logo3ShadowColor, "d", 1, 8.5),
               defHatchPen(logo3VariableColour, "d", 2, 4)
@@ -622,10 +414,12 @@ export default function AnimatedCanvas({
   }
 
   return (
-    <StyledCanvas
-      ref={canvasRef}
-      width={size.width}
-      height={size.height}
-    ></StyledCanvas>
+    <>
+      <StyledCanvas
+        ref={canvasRef}
+        width={size.width}
+        height={size.height}
+      ></StyledCanvas>
+    </>
   );
 }

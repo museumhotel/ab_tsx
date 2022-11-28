@@ -84,6 +84,10 @@ export const Canvas = styled.canvas`
   grid-area: canvas;
 `;
 
+export const MainDiv = styled.div`
+  grid-area: canvas;
+`;
+
 export const Footer = styled.footer`
   grid-area: footer;
   border-top: 1px solid #e1e1e1;

@@ -1,6 +1,8 @@
 //import Link from "next/link";
+import { useState } from "react";
 import styled from "styled-components";
 import CustomLink from "./Link";
+import Modal from "../components/Modal";
 
 const ButtonTL = styled.div`
   grid-area: tLButton;
@@ -49,6 +51,7 @@ const ButtonBR = styled.div`
 `;
 
 const NavButtons: React.FC = () => {
+  const [showModal, setShowModal] = useState(false);
   return (
     <>
       <ButtonTL>
@@ -57,7 +60,10 @@ const NavButtons: React.FC = () => {
       <ButtonTR>
         <CustomLink to="/about">About</CustomLink>
       </ButtonTR>
-      <ButtonBL>
+      <ButtonBL /* onClick={() => setShowModal(true)} */>
+        {/* <Modal onClose={() => setShowModal(false)} show={showModal}>
+          Hello frm modal
+        </Modal> */}
         <CustomLink to="/music">Music</CustomLink>
       </ButtonBL>
       <ButtonBR>

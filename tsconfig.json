@@ -21,7 +21,8 @@
     "**/*.tsx",
     "src/styles/styles.js",
     "src/components/Link.tsx",
-    "src/fonts/fonts.ts"
+    "src/fonts/fonts.ts",
+    "src/components/Modal.jsx"
   ],
   "exclude": ["node_modules"]
 }

@@ -64,6 +64,8 @@ export default class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
+          {/* Add the modal wrapper */}
+          <div id="modal"></div>
         </body>
       </Html>
     );
