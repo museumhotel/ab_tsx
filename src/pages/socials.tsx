@@ -1,7 +1,16 @@
-const Socials = () => {
+import { FC } from "react";
+import {
+  ContainerProps,
+  ContentContainer,
+} from "../components/ContentContainer";
+import { Layout } from "../components/Layout";
+
+const Socials: FC<ContainerProps> = ({ socials, children, ...props }) => {
   return (
     <>
-      <div>We dem boyz</div>
+      <Layout>
+        <ContentContainer socials="true"></ContentContainer>
+      </Layout>
     </>
   );
 };
