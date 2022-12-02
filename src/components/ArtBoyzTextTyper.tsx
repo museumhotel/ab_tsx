@@ -1,4 +1,4 @@
-import { FC, useRef } from "react";
+import { FC, useEffect, useRef } from "react";
 import styled from "styled-components";
 
 const ABTextDiv = styled.div`
@@ -16,23 +16,42 @@ let BSynonym = styled.h1`
   //display: flex;
 `;
 
-export const ArtBoyzTextTyper: FC = ({}) => {
+interface TextTyperProps {
+  tag?: string;
+  tags?: [HTMLHeadingElement];
+}
+
+export const ArtBoyzTextTyper: FC<TextTyperProps> = ({ tags }) => {
   //const inlineTxtRef = useRef<HTMLHeadingElement | null>(null);
   const ASynTxtRef = useRef<HTMLHeadingElement | null>(null);
   const BSynTxtRef = useRef<HTMLHeadingElement | null>(null);
 
+  //let headerTags = inlineTxtRef.current;
   let artSynonym = ASynTxtRef.current;
   let boySynonym = BSynTxtRef.current;
 
+  useEffect(() => {
+    return () => {};
+  }, []);
+
   if (artSynonym != null && boySynonym != null) {
-    console.log(ASynTxtRef);
-    console.log(BSynTxtRef);
+    // || headerTags != null
+    //console.log(ASynTxtRef);
+    //console.log(BSynTxtRef);
+    //let artSynonymTxt = artSynonym.innerHTML;
+    //let boySynonymTxt = boySynonym.innerHTML;
 
-    let artSynonymTxt = artSynonym.innerHTML;
-    let boySynonymTxt = boySynonym.innerHTML;
+    //console.log(inlineTxtRef);
+    const runRandom = () => {
+      const originalStrings = [""];
+      originalStrings.push(artSynonym!.innerHTML, boySynonym!.innerHTML);
+      console.log(originalStrings);
 
-    artSynonymTxt = "creative";
-    boySynonymTxt = "lads";
+      artSynonym!.innerHTML = "creative";
+      boySynonym!.innerHTML = "lads";
+    };
+
+    runRandom();
   }
 
   return (
