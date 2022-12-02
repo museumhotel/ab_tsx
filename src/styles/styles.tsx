@@ -66,7 +66,7 @@ export const AppContainer = styled.div`
   grid-template-areas:
     "tLButton . tRButton"
     ". canvas ."
-    "bLButton . bRButton"
+    "bLButton aBText bRButton"
     "footer footer footer";
   /* 
   ${mediaQueriesMax("mobileS")`

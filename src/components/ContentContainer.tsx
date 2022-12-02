@@ -1,10 +1,8 @@
 import { useRouter } from "next/router";
 import { FC, useRef } from "react";
 import styled, { css } from "styled-components";
-import useWindowSize from "../hooks/useWindowSize";
 
 export interface ContainerProps {
-  //page: string;
   about?: string;
   music?: string;
   socials?: string;
@@ -18,25 +16,6 @@ const musicPageBorderImgUrl = ` url("data:image/png;base64,iVBORw0KGgoAAAANSUhEU
   28 / 28px / 0 stretch `;
 
 const socialsPageBorderImgUrl = ` url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFQAAABUCAYAAAAcaxDBAAAAAXNSR0IArs4c6QAAAyRJREFUeF7tncF2wyAMBN3//+j29Wjs52Ei4Trp9ioslmERmKTt17Zt31vvzxeko/7G52373tFIPr/iSbAVGKCWGLQP8AC9JKBW8NmSpxpmHdjdfhz9OGDSPz5f1bfrP0C3LUAHi8WhEgiV+McDpQFQjbJx6u/umkn9Xep95RxqgZGDAlQu2QCVB3cCRvGPc6gdELUngBSn/FTjqCTZcyjpOZxD6QEbJ2AUX91fgMrbqzjUWrK4KT7eoXYJV9tbINRfa5zeY2fMQ4LsJkLtA1Qu0QAdCJDrq45+O4fSgClOZUJd2G58vUb92TiN7zJ+5qZSwgn1AVqsgbYm2iU9MYeqSclQceiR9XKganonah4Jtv2tbq/0zjjUCu7e5W3/3e0DtJlogD4NKO3KtKSbx1NOZ49p9pSh70OV5cvD708QoM1MA/TTgNISp3gzj/Z0Vf2Xjp85h9JHCu++SVn9AXrnXUQc6q8H0aFUU6rx9iJYTEjjKaXv+H7oUoGl0Z0/vFRvgPolfznHAfoHQGnVLV1C1HlDvKr/8C7fmnDigrmBQWuK1vHPLHlSXxVE+VfHq/rj0JUHffvaNeOW6ozP9NHZhvSqeIAef9fV3l3oC2brBppRm291e9Kr4nHoAofSjbaFTjO62nHV/KT/Mj7ze0oBup+iAJWWjUMlMGreDpSWONVcEkz56fm74wR4p+eVV88AvZjSAGW/x6HMSLXQQCm7SniSjJ6nOOkb4zZfawmb2SCsQDvAan7bH7W3E7hjGKD1PwQWoHAf2u5QWoIUry4pWjW25lE+0quu8+745kg3gO58ASrXZBwKwB7vUKqJd8fJgOQ40muXOOnR7/IksDtOAwjQgRDtmgEqgf17oOQYqkljnIDSkiY91RJE+S/jr1zfUYe0CwcoEZSvcgEaoPMEZj5GphpIvb17CSD9eA4lQHbTIEFPLwGkP0Ch5tME610+Dt0TKDuUZoiWPAmo5qdzr9VXbb8b78w5lA7KNEDa1Gx+6q8KyOYPUHhVDtBmQO1AuzclykcDsCWD2tv+lP47DvZK0MT/d3JNLUCb7wIC9JOA/gA7HqQ0lDXSTwAAAABJRU5ErkJggg==")  28 / 28px / 0 stretch `;
-
-type BorderProps = {
-  about: boolean;
-  music: boolean;
-  socials: boolean;
-};
-
-/* let StyledMainDiv = styled.div`
-  grid-area: canvas;
-  font-size: 2.5rem;
-  border-image: url(${({ props }) =>
-      props.page == "About" ? aboutPageBorderImgUrl : null})
-    28 / 28px / 0 round;
-  border-width: 12px;
-  border-style: solid;
-  border-image-repeat: stretch repeat;
-  width: 100%;
-  height: 100%;
-`; */
 
 let StyledMainDiv = styled.div<ContainerProps>`
   grid-area: canvas;
@@ -73,18 +52,3 @@ export let ContentContainer: FC<ContainerProps> = ({
     </>
   );
 };
-
-/* 
-export function ContentContainers({
-  about,
-  music,
-  socials,
-  children,
-}: ContainerProps) {
-  let size = useWindowSize();
-  //const divRef = useRef<HTMLDivElement | null>(null);
-  //${router.pathname == "/about" ? aboutPageBorderImgUrl : null};
-
-  return <></>;
-}
- */
