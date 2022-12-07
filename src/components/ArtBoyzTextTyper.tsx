@@ -34,6 +34,8 @@ type Props = {
   //styles?: React.CSSProperties
   children?: React.ReactNode;
   lineOne?: boolean;
+  nextCharProbability?: number;
+  typingDuration?: number;
 };
 const lineOneMarginBottom = `2.5rem`;
 
@@ -58,23 +60,36 @@ const ElementMap = {
   body2: "p",
 } as const;
 
-export const Typography = ({ element, children, lineOne = false }: Props) => {
+export const Typography = ({
+  element,
+  children,
+  lineOne = false,
+  nextCharProbability = 0.8,
+  typingDuration = 3000,
+}: Props) => {
   const selectedElement = ElementMap[element];
 
   const text = children as String;
   const [sliceIndex, setSliceIndex] = useState(0);
-  const [typingIntervalID, setTypingIntervalID] = useState(null);
+  const [typingIntervalID, setTypingIntervalID] = useState<NodeJS.Timer | null>(
+    null
+  );
+
+  const typingInterval = Math.floor(typingDuration / (text?.length || 1));
 
   useEffect(() => {
     const tID = setInterval(() => {
-      setSliceIndex((index) => index + 1);
-    }, 100);
+      if (Math.random() > 1 - nextCharProbability) {
+        setSliceIndex((index: any) => index! + 1);
+      }
+    }, typingInterval);
+    setTypingIntervalID(tID);
 
-    return () => clearInterval(tID);
+    return () => clearInterval(typingInterval);
   }, []);
 
   useEffect(() => {
-    if (sliceIndex >= text!.length) {
+    if (sliceIndex! >= text!.length) {
       clearInterval(typingIntervalID!);
     }
   }, [sliceIndex]);
@@ -82,7 +97,7 @@ export const Typography = ({ element, children, lineOne = false }: Props) => {
   return (
     //@ts-ignore
     <RenderedText as={selectedElement} lineOne={lineOne}>
-      {text!.slice(0, sliceIndex)}
+      {text!.slice(0, sliceIndex!)}
     </RenderedText>
   );
 };
