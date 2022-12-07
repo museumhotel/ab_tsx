@@ -1,6 +1,10 @@
+import { loadGetInitialProps } from "next/dist/shared/lib/utils";
 import { type } from "os";
-import React, { FC, ReactElement, useEffect, useRef } from "react";
-import styled from "styled-components";
+import React, { FC, ReactElement, useEffect, useRef, useState } from "react";
+import styled, {
+  AnyStyledComponent,
+  StyledComponentInnerAttrs,
+} from "styled-components";
 
 const ABTextDiv = styled.div`
   grid-area: aBText;
@@ -25,11 +29,23 @@ interface TextTyperProps {
   element?: React.ElementType;
 }
 
-const RenderedText = styled.p`
+type Props = {
+  element: keyof typeof ElementMap;
+  //styles?: React.CSSProperties
+  children?: React.ReactNode;
+  lineOne?: boolean;
+};
+const lineOneMarginBottom = `2.5rem`;
+
+const RenderedText = styled.p<Props>`
   grid-area: aBText;
+  font-family: "Boom4Real";
+  font-size: 1.25rem;
+  justify-self: left;
+  margin-bottom: ${(props) => (props.lineOne ? lineOneMarginBottom : 0)};
 `;
 
-const VariantMap = {
+const ElementMap = {
   h1: "h1",
   h2: "h2",
   h3: "h3",
@@ -42,15 +58,33 @@ const VariantMap = {
   body2: "p",
 } as const;
 
-type Props = {
-  variant: keyof typeof VariantMap;
-  children?: React.ReactNode;
-};
+export const Typography = ({ element, children, lineOne = false }: Props) => {
+  const selectedElement = ElementMap[element];
 
-export const Typography = ({ variant, children }: Props) => {
-  const selectedComponent = VariantMap[variant];
+  const text = children as String;
+  const [sliceIndex, setSliceIndex] = useState(0);
+  const [typingIntervalID, setTypingIntervalID] = useState(null);
 
-  return <RenderedText as={selectedComponent}>{children}</RenderedText>;
+  useEffect(() => {
+    const tID = setInterval(() => {
+      setSliceIndex((index) => index + 1);
+    }, 100);
+
+    return () => clearInterval(tID);
+  }, []);
+
+  useEffect(() => {
+    if (sliceIndex >= text!.length) {
+      clearInterval(typingIntervalID!);
+    }
+  }, [sliceIndex]);
+
+  return (
+    //@ts-ignore
+    <RenderedText as={selectedElement} lineOne={lineOne}>
+      {text!.slice(0, sliceIndex)}
+    </RenderedText>
+  );
 };
 
 type TextProps<C extends React.ElementType> = {

@@ -96,7 +96,8 @@ export const Footer = styled.footer`
 
 export const FooterText = styled.p`
   display: flex;
-  justify-content: center;
+  justify-content: right;
+  padding-right: 0.5rem;
   /* position: absolute;
   left: 50%; */
   font-family: "Boom4Real";

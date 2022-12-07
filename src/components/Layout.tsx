@@ -32,9 +32,7 @@ export const Layout = ({ children }: PropsWithChildren<LayoutProps>) => {
     <>
       <AppContainer>
         <NavButtons />
-
         {children}
-
         {/* <ArtBoyzTextTyper element={"h1"}>Art</ArtBoyzTextTyper>
         <ArtBoyzTextTyper element={"p"}>
           <br />
@@ -46,7 +44,12 @@ export const Layout = ({ children }: PropsWithChildren<LayoutProps>) => {
         {/* <TypingText>Art</TypingText>
         <br />
         <TypingText>Boyz.</TypingText> */}
-        <Typography variant={"h2"}>Art Boyz.</Typography>
+        <Typography element={"body1"} lineOne={true}>
+          Art
+        </Typography>
+        <Typography element={"body1"} lineOne={false}>
+          Boyz.
+        </Typography>
         <Footer>
           <FooterText>2022</FooterText>
         </Footer>
