@@ -1,10 +1,11 @@
-import { FC, useEffect, useRef } from "react";
+import { type } from "os";
+import React, { FC, ReactElement, useEffect, useRef } from "react";
 import styled from "styled-components";
 
 const ABTextDiv = styled.div`
   grid-area: aBText;
   font-family: "Boom4Real";
-  font-size: 0.75rem;
+  font-size: 1rem;
   justify-self: left;
   //display: flex;
 `;
@@ -17,11 +18,65 @@ let BSynonym = styled.h1`
 `;
 
 interface TextTyperProps {
+  //extends React.ReactHTMLElement<HTMLElement>
   tag?: string;
-  tags?: [HTMLHeadingElement];
+  children?: React.ReactNode;
+  //element?: React.ReactHTMLElement<HTMLElement>;
+  element?: React.ElementType;
 }
 
-export const ArtBoyzTextTyper: FC<TextTyperProps> = ({ tags }) => {
+const RenderedText = styled.p`
+  grid-area: aBText;
+`;
+
+const VariantMap = {
+  h1: "h1",
+  h2: "h2",
+  h3: "h3",
+  h4: "h4",
+  h5: "h5",
+  h6: "h6",
+  subheading1: "h6",
+  subheading2: "h6",
+  body1: "p",
+  body2: "p",
+} as const;
+
+type Props = {
+  variant: keyof typeof VariantMap;
+  children?: React.ReactNode;
+};
+
+export const Typography = ({ variant, children }: Props) => {
+  const selectedComponent = VariantMap[variant];
+
+  return <RenderedText as={selectedComponent}>{children}</RenderedText>;
+};
+
+type TextProps<C extends React.ElementType> = {
+  as?: C;
+  children?: React.ReactNode;
+} & React.ComponentPropsWithoutRef<C>;
+
+export const TypingText = <C extends React.ElementType>({
+  as,
+  children,
+}: {
+  as?: C;
+  children?: React.ReactNode;
+}) => {
+  interface AsComponent {
+    component?: typeof as | "span";
+  }
+  const Component = as || "span";
+  //const TXTComponent = styled.p``;
+
+  //const Text extends Component =
+
+  return <Component>{children}</Component>;
+};
+
+export const ArtBoyzTextTyper: FC<TextTyperProps> = ({ children, element }) => {
   //const inlineTxtRef = useRef<HTMLHeadingElement | null>(null);
   const ASynTxtRef = useRef<HTMLHeadingElement | null>(null);
   const BSynTxtRef = useRef<HTMLHeadingElement | null>(null);
@@ -57,8 +112,9 @@ export const ArtBoyzTextTyper: FC<TextTyperProps> = ({ tags }) => {
   return (
     <>
       <ABTextDiv>
-        <ASynonym ref={ASynTxtRef}>Art</ASynonym>
-        <BSynonym ref={BSynTxtRef}>Boyz.</BSynonym>
+        <RenderedText as={element}>{children}</RenderedText>
+        {/*  <ASynonym ref={ASynTxtRef}>Art</ASynonym>
+        <BSynonym ref={BSynTxtRef}>Boyz.</BSynonym> */}
       </ABTextDiv>
     </>
   );

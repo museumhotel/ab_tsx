@@ -4,7 +4,7 @@ import styled from "styled-components";
 import useWindowSize from "../hooks/useWindowSize";
 import { AppContainer, Footer, FooterText } from "../styles/styles";
 import AnimatedCanvas from "./AnimatedCanvas";
-import { ArtBoyzTextTyper } from "./ArtBoyzTextTyper";
+import { ArtBoyzTextTyper, TypingText, Typography } from "./ArtBoyzTextTyper";
 //import Canvas from "./Canvas";
 import NavButtons from "./NavButtons";
 import { Portal } from "./Portal";
@@ -35,7 +35,18 @@ export const Layout = ({ children }: PropsWithChildren<LayoutProps>) => {
 
         {children}
 
-        <ArtBoyzTextTyper />
+        {/* <ArtBoyzTextTyper element={"h1"}>Art</ArtBoyzTextTyper>
+        <ArtBoyzTextTyper element={"p"}>
+          <br />
+          <br />
+          Boyz.
+        </ArtBoyzTextTyper> */}
+        {/*         <TypingText as={"h1"}> Art Boyz.</TypingText>
+         */}
+        {/* <TypingText>Art</TypingText>
+        <br />
+        <TypingText>Boyz.</TypingText> */}
+        <Typography variant={"h2"}>Art Boyz.</Typography>
         <Footer>
           <FooterText>2022</FooterText>
         </Footer>
