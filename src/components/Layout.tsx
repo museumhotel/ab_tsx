@@ -44,10 +44,10 @@ export const Layout = ({ children }: PropsWithChildren<LayoutProps>) => {
         {/* <TypingText>Art</TypingText>
         <br />
         <TypingText>Boyz.</TypingText> */}
-        <Typography element={"body1"} lineOne={true}>
+        <Typography element={"body1"} lineOne={true} /* displayCaret={false} */>
           Art
         </Typography>
-        <Typography element={"body1"} lineOne={false}>
+        <Typography element={"body1"} lineOne={false} /* displayCaret={true} */>
           Boyz.
         </Typography>
         <Footer>

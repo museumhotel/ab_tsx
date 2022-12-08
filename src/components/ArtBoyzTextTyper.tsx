@@ -3,13 +3,15 @@ import { type } from "os";
 import React, { FC, ReactElement, useEffect, useRef, useState } from "react";
 import styled, {
   AnyStyledComponent,
+  css,
+  keyframes,
   StyledComponentInnerAttrs,
 } from "styled-components";
 
 const ABTextDiv = styled.div`
   grid-area: aBText;
   font-family: "Boom4Real";
-  font-size: 1rem;
+  font-size: 1em;
   justify-self: left;
   //display: flex;
 `;
@@ -36,15 +38,69 @@ type Props = {
   lineOne?: boolean;
   nextCharProbability?: number;
   typingDuration?: number;
+  displayCaret?: boolean;
+  caretBlinkingSpeed?: number;
 };
 const lineOneMarginBottom = `2.5rem`;
+const caretCSS = `
+    content: "";
+    //position: absolute;
+    left: 10em;
+    height: 1.25em;
+    border-right: 0.25em solid red;
+
+    animation: blink 1000ms linear infinite;
+    @keyframes blink{
+        0% {opacity: 1;}
+        25% {opacity: 0;}
+        75% {opacity: 1;}
+    }
+  `;
+const blinking = keyframes`
+    0% {
+        opacity: 1;
+    }
+    25% {
+        opacity: 0;
+    }
+    75% {
+        opacity: 1;
+    }
+  `;
+/* const BlinkingMixin = css<Props>`
+  //animation: ${blinking} ${(props) =>
+    props.caretBlinkingSpeed}ms linear infinite;
+`; */
 
 const RenderedText = styled.p<Props>`
   grid-area: aBText;
   font-family: "Boom4Real";
-  font-size: 1.25rem;
+  font-size: 1em;
   justify-self: left;
   margin-bottom: ${(props) => (props.lineOne ? lineOneMarginBottom : 0)};
+  display: inline;
+
+  &::after {
+    content: "";
+    //position: absolute;
+    left: 10em;
+    height: 1em;
+    border-right: 0.25em solid red;
+
+    animation: blink 1000ms linear infinite;
+    @keyframes blink {
+      0% {
+        opacity: 1;
+      }
+      25% {
+        opacity: 0;
+      }
+      75% {
+        opacity: 1;
+      }
+    }
+  }
+  /*  ${(props) => (props.displayCaret ? caretCSS : 0)} */
 `;
 
 const ElementMap = {
@@ -66,6 +122,7 @@ export const Typography = ({
   lineOne = false,
   nextCharProbability = 0.8,
   typingDuration = 3000,
+  displayCaret = false,
 }: Props) => {
   const selectedElement = ElementMap[element];
 
@@ -96,7 +153,11 @@ export const Typography = ({
 
   return (
     //@ts-ignore
-    <RenderedText as={selectedElement} lineOne={lineOne}>
+    <RenderedText
+      as={selectedElement}
+      lineOne={lineOne}
+      displayCaret={displayCaret}
+    >
       {text!.slice(0, sliceIndex!)}
     </RenderedText>
   );
