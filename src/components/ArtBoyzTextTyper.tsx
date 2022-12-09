@@ -40,6 +40,8 @@ type Props = {
   typingDuration?: number;
   displayCaret?: boolean;
   caretBlinkingSpeed?: number;
+  glitchProbability?: number;
+  potentialGlitchInterval?: number;
 };
 const lineOneMarginBottom = `2.5rem`;
 const caretCSS = `
@@ -78,14 +80,14 @@ const RenderedText = styled.p<Props>`
   font-size: 1em;
   justify-self: left;
   margin-bottom: ${(props) => (props.lineOne ? lineOneMarginBottom : 0)};
-  display: inline;
+  //display: inline;
 
   &::after {
     content: "";
     //position: absolute;
-    left: 10em;
+    right: -1em;
     height: 1em;
-    border-right: 0.25em solid red;
+    border-right: 0.25em solid black;
 
     animation: blink 1000ms linear infinite;
     @keyframes blink {
@@ -121,28 +123,62 @@ export const Typography = ({
   children,
   lineOne = false,
   nextCharProbability = 0.8,
+  //nextCharProbability = 0.5,
   typingDuration = 3000,
   displayCaret = false,
+  glitchProbability = 0.05,
+  potentialGlitchInterval = 200,
 }: Props) => {
   const selectedElement = ElementMap[element];
 
-  const text = children as String;
+  const text = children as string;
+  const [renderedText, setRenderedText] = useState<string | null>(text || "");
   const [sliceIndex, setSliceIndex] = useState(0);
   const [typingIntervalID, setTypingIntervalID] = useState<NodeJS.Timer | null>(
     null
   );
 
+  const possibleCharacters: string =
+    "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890-=!@£$%^&*()_+[]{};:|,./<>?";
+
+  const randomizeTextCharacter = (textToAugment: string) => {
+    const charToReplaceIndex = Math.floor(Math.random() * textToAugment.length);
+    const randomChar = possibleCharacters.charAt(
+      Math.floor(Math.random() * possibleCharacters.length)
+    );
+    const splitText = textToAugment.split("");
+    splitText[charToReplaceIndex] = randomChar;
+    const newText = splitText.join("");
+    return newText;
+  };
+
   const typingInterval = Math.floor(typingDuration / (text?.length || 1));
 
   useEffect(() => {
-    const tID = setInterval(() => {
-      if (Math.random() > 1 - nextCharProbability) {
-        setSliceIndex((index: any) => index! + 1);
+    const gID = setInterval(() => {
+      if (Math.random() > 1 - glitchProbability) {
+        setRenderedText(randomizeTextCharacter(text!));
+      } else {
+        if (renderedText !== text) {
+          setRenderedText(text);
+        }
       }
+    }, potentialGlitchInterval);
+    //original interval
+    const tID = setInterval(() => {
+      //setSliceIndex((index) => index! + 1);
+      if (Math.random() > 1 - nextCharProbability) {
+        setSliceIndex((index) => index! + 1);
+      }
+      //}, 150);
     }, typingInterval);
     setTypingIntervalID(tID);
 
-    return () => clearInterval(typingInterval);
+    return () => {
+      //clearInterval(typingInterval);
+      clearInterval(gID);
+      clearInterval(tID);
+    };
   }, []);
 
   useEffect(() => {
@@ -158,7 +194,7 @@ export const Typography = ({
       lineOne={lineOne}
       displayCaret={displayCaret}
     >
-      {text!.slice(0, sliceIndex!)}
+      {renderedText!.slice(0, sliceIndex!)}
     </RenderedText>
   );
 };
