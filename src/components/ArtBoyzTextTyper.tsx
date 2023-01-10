@@ -118,6 +118,8 @@ const ElementMap = {
   body2: "p",
 } as const;
 
+const possibleStrings: string[] = ["creativity", "genius"];
+
 export const Typography = ({
   element,
   children,
@@ -138,6 +140,8 @@ export const Typography = ({
     null
   );
 
+  const [selectedString, setSelectedString] = useState<string | null>(null);
+
   const possibleCharacters: string =
     "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890-=!@£$%^&*()_+[]{};:|,./<>?";
 
@@ -153,6 +157,13 @@ export const Typography = ({
   };
 
   const typingInterval = Math.floor(typingDuration / (text?.length || 1));
+
+  useEffect(() => {
+    // Select a random string from the array of possible strings
+    const randomString =
+      possibleStrings[Math.floor(Math.random() * possibleStrings.length)];
+    setSelectedString(randomString);
+  }, []);
 
   useEffect(() => {
     const gID = setInterval(() => {
@@ -196,72 +207,5 @@ export const Typography = ({
     >
       {renderedText!.slice(0, sliceIndex!)}
     </RenderedText>
-  );
-};
-
-type TextProps<C extends React.ElementType> = {
-  as?: C;
-  children?: React.ReactNode;
-} & React.ComponentPropsWithoutRef<C>;
-
-export const TypingText = <C extends React.ElementType>({
-  as,
-  children,
-}: {
-  as?: C;
-  children?: React.ReactNode;
-}) => {
-  interface AsComponent {
-    component?: typeof as | "span";
-  }
-  const Component = as || "span";
-  //const TXTComponent = styled.p``;
-
-  //const Text extends Component =
-
-  return <Component>{children}</Component>;
-};
-
-export const ArtBoyzTextTyper: FC<TextTyperProps> = ({ children, element }) => {
-  //const inlineTxtRef = useRef<HTMLHeadingElement | null>(null);
-  const ASynTxtRef = useRef<HTMLHeadingElement | null>(null);
-  const BSynTxtRef = useRef<HTMLHeadingElement | null>(null);
-
-  //let headerTags = inlineTxtRef.current;
-  let artSynonym = ASynTxtRef.current;
-  let boySynonym = BSynTxtRef.current;
-
-  useEffect(() => {
-    return () => {};
-  }, []);
-
-  if (artSynonym != null && boySynonym != null) {
-    // || headerTags != null
-    //console.log(ASynTxtRef);
-    //console.log(BSynTxtRef);
-    //let artSynonymTxt = artSynonym.innerHTML;
-    //let boySynonymTxt = boySynonym.innerHTML;
-
-    //console.log(inlineTxtRef);
-    const runRandom = () => {
-      const originalStrings = [""];
-      originalStrings.push(artSynonym!.innerHTML, boySynonym!.innerHTML);
-      console.log(originalStrings);
-
-      artSynonym!.innerHTML = "creative";
-      boySynonym!.innerHTML = "lads";
-    };
-
-    runRandom();
-  }
-
-  return (
-    <>
-      <ABTextDiv>
-        <RenderedText as={element}>{children}</RenderedText>
-        {/*  <ASynonym ref={ASynTxtRef}>Art</ASynonym>
-        <BSynonym ref={BSynTxtRef}>Boyz.</BSynonym> */}
-      </ABTextDiv>
-    </>
   );
 };

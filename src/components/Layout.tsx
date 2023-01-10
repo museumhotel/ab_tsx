@@ -4,7 +4,7 @@ import styled from "styled-components";
 import useWindowSize from "../hooks/useWindowSize";
 import { AppContainer, Footer, FooterText } from "../styles/styles";
 import AnimatedCanvas from "./AnimatedCanvas";
-import { ArtBoyzTextTyper, TypingText, Typography } from "./ArtBoyzTextTyper";
+import { Typography } from "./ArtBoyzTextTyper";
 //import Canvas from "./Canvas";
 import NavButtons from "./NavButtons";
 import { Portal } from "./Portal";
